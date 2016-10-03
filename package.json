@@ -1,0 +1,21 @@
+{
+  "name": "crapp-mdl",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "exports-loader": "^0.6.3",
+    "react-scripts": "0.6.1"
+  },
+  "dependencies": {
+    "material-design-lite": "^1.2.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-router": "^2.8.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

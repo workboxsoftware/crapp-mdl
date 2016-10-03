@@ -1,0 +1,17 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+body, p {
+  margin: 0;
+  padding: 0;
+}
+
+main.mdl-layout__content .page-content {
+  padding: 16px;
+}
+
+main.mdl-layout__content .page-content h1 {
+  font-size: 24px;
+  margin: 0;
+}
