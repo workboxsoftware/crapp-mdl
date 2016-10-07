@@ -11,13 +11,19 @@ ul {
   list-style: none;
 }
 
-main.mdl-layout__content .page-content h1 {
+.home {
+  padding: 16px;
+}
+
+.home h1 {
   font-size: 24px;
   margin: 0;
 }
 
+
+
 .tabs__about .mdl-tabs {
-  margin-top: -80px;
+  margin-top: -81px;
 }
 
 .tabs__about .mdl-tabs__panel {
@@ -49,5 +55,5 @@ main.mdl-layout__content .page-content h1 {
 
 .panel__header {
   width: 100%;
-  height: 80px;
+  height: 81px;
 }
