@@ -11,15 +11,43 @@ ul {
   list-style: none;
 }
 
-main.mdl-layout__content .page-content {
-  padding: 16px;
-}
-
 main.mdl-layout__content .page-content h1 {
   font-size: 24px;
   margin: 0;
 }
 
-.mdl-tabs__panel {
+.tabs__about .mdl-tabs {
+  margin-top: -80px;
+}
+
+.tabs__about .mdl-tabs__panel {
   padding: 16px;
+}
+
+.tabs__about p:first-child {
+  padding: 16px;
+}
+
+.tabs__about .mdl-tabs__tab-bar {
+  justify-content: flex-start;
+  padding: 16px;
+}
+
+.filter__user--wrapper {
+  position: absolute;
+  right: 0;
+  top: 24px;
+}
+
+.filter__user {
+  position: relative;
+}
+
+.panel {
+  position: relative;
+}
+
+.panel__header {
+  width: 100%;
+  height: 80px;
 }
