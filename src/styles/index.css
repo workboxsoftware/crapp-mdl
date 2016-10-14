@@ -39,6 +39,10 @@ ul {
   padding: 16px;
 }
 
+.tabs__about .mdl-tabs.is-upgraded .mdl-tabs__tab.is-active:after {
+  background: #ff8000;
+}
+
 .filter__user--wrapper {
   position: absolute;
   right: 0;
