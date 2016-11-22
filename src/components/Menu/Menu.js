@@ -12,6 +12,9 @@ const Menu = () => {
         <Link to="/about" className="mdl-navigation__link">
           About
         </Link>
+        <Link to="/timesheet" className="mdl-navigation__link">
+          Tiemsheet
+        </Link>
       </nav>
     </div>
   );
