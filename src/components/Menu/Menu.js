@@ -13,7 +13,7 @@ const Menu = () => {
           About
         </Link>
         <Link to="/timesheet" className="mdl-navigation__link">
-          Tiemsheet
+          Timesheets
         </Link>
       </nav>
     </div>
