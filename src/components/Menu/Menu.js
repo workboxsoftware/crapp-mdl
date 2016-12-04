@@ -12,8 +12,11 @@ const Menu = () => {
         <Link to="/about" className="mdl-navigation__link">
           About
         </Link>
-        <Link to="/timesheet" className="mdl-navigation__link">
-          Timesheets
+        <Link to="/refi18n" className="mdl-navigation__link">
+          Basic i18n
+        </Link>
+        <Link to="/refdataentry" className="mdl-navigation__link">
+          Data Entry with Redux-Form
         </Link>
       </nav>
     </div>

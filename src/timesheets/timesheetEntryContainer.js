@@ -4,18 +4,18 @@ import { connect } from 'react-redux'
 
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-const INITIAL_VALUES = { client: 'john' };
+const INITIAL_VALUES = { client: 'john', billingRate:25678.99};
 
 // synchronous validation on keystroke
 function validate(values) {
   var errors = {};
 
   if (!values.client || values.client.trim() === '') {
-    errors.client = 'Enter client';
+    errors.client = { noclient:'Enter client' };
   }
 
   if (!values.project || values.project.trim() === '') {
-    errors.project = 'Enter project';
+    errors.project = { noproject: 'Enter project' };
   }
 
     if (values.client !== 'john') {
@@ -28,7 +28,7 @@ function validate(values) {
 // update the database
 const validateAndUpdateTimesheet = (values, dispatch) => {
 
-  return sleep(5000) // simulate server latency
+  return sleep(2000) // simulate server latency
   .then(() => {
       let errors = [];
       if (values.client !== 'john') {
@@ -56,15 +56,15 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return { 
-    initialValues : INITIAL_VALUES
+    initialValues: INITIAL_VALUES,
+    application: state.application
   };
 }
 
-let TimesheetContainer = reduxForm({
+// need two HOC's - one for reduxForm and the other for connect
+const TsForm = reduxForm({
   form: 'timesheetForm', // a unique identifier for this form
   validate
 })(TimesheetForm)
 
-TimesheetContainer = connect(mapStateToProps, mapDispatchToProps)(TimesheetContainer)
-
-export default TimesheetContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(TsForm)

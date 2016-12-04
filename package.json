@@ -4,21 +4,27 @@
   "private": true,
   "devDependencies": {
     "exports-loader": "^0.6.3",
-    "react-scripts": "0.6.1"
+    "react-scripts": "0.6.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.1.1"
   },
   "dependencies": {
+    "babel-plugin-react-intl": "^2.2.0",
     "material-design-lite": "^1.2.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-intl": "^2.1.5",
+    "react-intl": "^2.0.0-beta-1",
     "react-redux": "^4.4.6",
     "react-router": "^2.8.1",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
-    "redux-form": "^6.2.0"
+    "redux-form": "^6.2.0",
+    "redux-router": "^2.1.2",
+    "redux-thunk": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:devtools": "react-scripts start && DEVTOOLS=true",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

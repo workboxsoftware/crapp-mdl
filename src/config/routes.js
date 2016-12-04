@@ -3,7 +3,9 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import About from '../components/About/About';
 import App from '../components/App/App';
 import Home from '../components/Home/Home';
-import Timesheet from '../timesheets/timesheetEntryContainer'; 
+import Refi18n from '../refi18n/refi18nContainer';  
+import RefDataEntry from '../refDataEntry/refDataEntryContainer';
+
 
 const routes = (props) => {
   return (
@@ -11,7 +13,8 @@ const routes = (props) => {
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="about" component={About} />
-        <Route path="timesheet" component={Timesheet} />
+        <Route path="refi18n" component={Refi18n} />
+        <Route path="refdataentry" component={RefDataEntry} />
       </Route>
     </Router>
   );
