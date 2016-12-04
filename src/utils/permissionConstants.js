@@ -1,0 +1,5 @@
+export const CREATE_CLIENT = 'create_client'
+export const CREATE_PROJECT = 'create_project'
+export const CREATE_USER = 'create_uer'
+export const ENTER_TIMESHEETS = 'enter_timesheets'
+export const IS_ADMIN = 'is_admin'
