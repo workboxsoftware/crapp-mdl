@@ -1,0 +1,20 @@
+.Container {
+  display: flex;
+  height: calc(100vh - 55px);
+  flex-direction: row
+}
+
+.Spinner {
+  position:fixed;
+  z-index:99;/* make higher than whatever is on the page */
+  top:80px;
+  left:0;
+  right:0;
+  margin:auto;
+  width:20px;
+  height:20px;
+}
+
+.Error {
+  color:red;
+}

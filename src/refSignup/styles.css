@@ -1,5 +1,0 @@
-.Container {
-  display: flex;
-  height: calc(100vh - 55px);
-  flex-direction: row
-}

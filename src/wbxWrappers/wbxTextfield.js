@@ -97,7 +97,7 @@ class WbxTextfield extends Component {
      // }
     return (
       <div>
-        { rows ? (   // if rows passed in then assume it's a '
+        { rows ? (   // if rows prop passed in then assume it's a 'textarea'
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <textarea className="mdl-textfield__input" {...input} id="fieldId" autoComplete="off" />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
