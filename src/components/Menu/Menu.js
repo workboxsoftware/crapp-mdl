@@ -18,6 +18,9 @@ const Menu = () => {
         <Link to="/refdataentry" className="mdl-navigation__link">
           Data Entry with Redux-Form
         </Link>
+         <Link to="/refsignup" className="mdl-navigation__link">
+          Sign-up
+        </Link>
       </nav>
     </div>
   );

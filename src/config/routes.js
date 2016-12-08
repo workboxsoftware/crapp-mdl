@@ -5,6 +5,8 @@ import App from '../components/App/App';
 import Home from '../components/Home/Home';
 import Refi18n from '../refi18n/refi18nContainer';  
 import RefDataEntry from '../refDataEntry/refDataEntryContainer';
+import RefSignup from '../refSignup/refSignupContainer';
+
 
 
 const routes = (props) => {
@@ -15,6 +17,7 @@ const routes = (props) => {
         <Route path="about" component={About} />
         <Route path="refi18n" component={Refi18n} />
         <Route path="refdataentry" component={RefDataEntry} />
+        <Route path="refsignup" component={RefSignup} />
       </Route>
     </Router>
   );

@@ -45,7 +45,6 @@ class WbxTextfield extends Component {
   }
 
   render() {
-    
     const { input, label, type, rows } = this.props;
     const {formatMessage} = this.props.intl;
     const tr = new translateText(formatMessage);
@@ -63,24 +62,55 @@ class WbxTextfield extends Component {
     // if input type is numeric, then set pattern. MDL only gives a very simplistic
     // error message so just check that number has no more than 9 significant
     // digits and no more than 4 decimal digits which is the most this app needs.
-    const pattern = (type === 'number') ? {pattern: '^-?[0-9]{0,9}(.[0-9]{0,3})?$'} : '';
+    // const pattern = (type === 'number') ? {pattern: '^-?[0-9]{0,9}(.[0-9]{0,3})?$'} : '';
 
-     return (
-       <div>
-         { rows ? (   // if rows passed in then assume it's a '
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">   
-            <textarea className="mdl-textfield__input" {...input} id="sample3" autoComplete="off" />
-            <label className="mdl-textfield__label" htmlFor="sample3">{finalLabel}</label>
+      // html doesn't handle input type numeric or email
+      // very well.  For now, do all email validation
+      // on server - the input was showing an error
+      // right away.  This is the best regex that I
+      // could find: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+
+
+    let pattern = '';
+    let myType = type;
+    switch (type) {
+      case 'number':
+        pattern = {pattern: '^-?[0-9]{0,9}(.[0-9]{0,3})?$'};
+        myType = "text";
+        break;
+      case 'email':
+        myType = "text";
+        break;
+      default:
+        break;
+    }
+
+
+      // for some reason html type = number doesn't like decimal points
+      // so just rely on pattern to make ok
+      // const myType = (type === 'number') ? 'text' : type;
+
+      // if (type === 'password') {
+      //   debugger;
+      //   console.log('got password');
+     // }
+    return (
+      <div>
+        { rows ? (   // if rows passed in then assume it's a '
+          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <textarea className="mdl-textfield__input" {...input} id="fieldId" autoComplete="off" />
+            <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
-          </div>  
+          </div>
         ) : (
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">   
-            <input className="mdl-textfield__input" {...input} id="sample3" autoComplete="off" {...pattern} />
-            <label className="mdl-textfield__label" htmlFor="sample3">{finalLabel}</label>
+          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input className="mdl-textfield__input" {...input} type={myType} id="fieldId" autoComplete="off" {...pattern} />
+            <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
-          </div>  
-        )}     
-    </div>
+          </div>
+        )}
+      </div>
     );
   }
 }
