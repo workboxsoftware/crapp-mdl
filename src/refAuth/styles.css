@@ -1,10 +1,10 @@
-.Container {
+.Signup-container {
   display: flex;
   height: calc(100vh - 55px);
   flex-direction: row
 }
 
-.Spinner {
+.Signup-spinner {
   position:fixed;
   z-index:99;/* make higher than whatever is on the page */
   top:80px;
@@ -15,6 +15,124 @@
   height:20px;
 }
 
-.Error {
+.Signup-error {
   color:red;
+  max-width: 300px;
+}
+
+/*.Signup-leftside {*/
+  /*max-width: 150px;*/
+/*}*/
+
+.Signup-left-side {
+  flex: 1;
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  min-width: 125px;
+  background-color: rgba(255,64,129,.2);
+  overflow: hidden;
+}
+
+.Signup-right-side {
+  flex: 1;
+  flex-grow: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Signup-grow-area {
+  flex-grow: 1;
+}
+
+.Signup-input-area {
+  color: #333333;
+}
+
+.Signup-align-right {
+  flex-shrink: 0;
+  text-align: right;
+  margin-top: 25px;
+}
+
+.Signup-loading {
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  top: 90px;
+}
+
+.Signup-accept-area {
+  font-size: 12px;
+  color: rgb(192,192,192);
+  max-width: 300px;
+}
+
+.Signup-cloud-parent {
+  /*flexShrink: 1;*/
+  min-width: 0;
+  min-height: 60px;
+  background-color: transparent;
+  flex-grow: 1;
+}
+
+.Signup-clouds {
+  position :relative;
+  width: 35px;
+  margin-top: 20px;
+  left: 150px;
+  animation: Signup-clouds-anim 25s infinite linear;
+}
+
+.Signup-clouds2 {
+  position :relative;
+  width: 40px;
+  margin-top: 50px;
+  left: -200px;
+  animation: Signup-clouds-anim 15s infinite linear;
+  animation-delay: 20s;
+}
+
+@keyframes Signup-clouds-anim {
+  0%   {left: -175px;}
+  100% {left: 90%}
+}
+
+.Signup-img-parent {
+  /*flex-shrink: 1;*/
+  min-width: 0;
+  min-height: 0;
+  flex-grow: 1;
+  background-color: yellow;
+  margin-top: auto;
+}
+
+.Signup-img-area1 {
+  width: auto;
+  height: auto;
+  max-width: 50%;
+  max-height: 50%;
+  align-self: center;
+  margin-bottom: 0px;
+}
+
+.Signup-img-area2 {
+  width: auto;
+  height: auto;
+  max-width: 50%;
+  max-height: 50%;
+  align-self: center;
+  margin-bottom: 0px;
+  animation: Signup-rocket-lift 8s ease;
+  animation-fill-mode: forwards;
+  overflow: visible;;
+}
+
+@keyframes Signup-rocket-lift {
+  0% {margin-bottom: 0px}
+  100% {margin-bottom: 400px;}
 }

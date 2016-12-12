@@ -8,13 +8,14 @@ import reduxThunk from 'redux-thunk';
 import {combineReducers} from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form'
 import {addLocaleData} from 'react-intl';
+import {IntlProvider} from 'react-intl';
 import applicationReducer from './application/applicationReducer';
 import authReducer from './refAuth/redux';
 import { AUTH_USER, UNAUTH_USER } from './refAuth/redux'
 import en from 'react-intl/lib/locale-data/en'
 import fr from 'react-intl/lib/locale-data/fr'
-// import es from 'react-intl/lib/locale-data/es'
 import de from 'react-intl/lib/locale-data/de'
+// import es from 'react-intl/lib/locale-data/es'
 import ConnectedIntlProvider from './utils/connectedIntlProvider';
 import * as i18n from './i18n'
 addLocaleData(en);

@@ -10,5 +10,13 @@ export default {
   "noproject": "Entrer dans le projet",
   "nonum": "Doit être un nombre",
   "project100": "Projet n'existe pas - doit être 100",
-  "clientjohn": "Client n'existe pas - doit être john"
+  "clientjohn": "Client n'existe pas - doit être john",
+  "firstName": "Prénom",
+  "lastName": "Nom de famille",
+  "companyName": "Nom de la compagnie",
+  "email" :"Email",
+  "password": "Mot de passe",
+  "username": "Nom d'utilisateur",
+  "signup.more": "presque là",
+   "signup": "m'inscrire"
 }
