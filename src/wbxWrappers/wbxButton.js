@@ -15,7 +15,7 @@ class WbxButton extends Component {
 
   render() {
      return (
-       <button className="mdl-button mdl-js-button mdl-button--raised   mdl-button--colored mdl-js-ripple-effect" type={this.props.type} disabled={this.props.disabled}>
+       <button className="mdl-button mdl-js-button mdl-button--raised   mdl-button--colored mdl-js-ripple-effect" {...this.props}>
           {this.props.children}
         </button>
     );
@@ -24,7 +24,9 @@ class WbxButton extends Component {
 
 export default WbxButton;
 
-
+/*
+ <button className="mdl-button mdl-js-button mdl-button--raised   mdl-button--colored mdl-js-ripple-effect" type={this.props.type} disabled={this.props.disabled}>
+ */
 
 
 

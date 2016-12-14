@@ -6,8 +6,7 @@ import Home from '../components/Home/Home';
 import Refi18n from '../refi18n/refi18nContainer';  
 import RefDataEntry from '../refDataEntry/refDataEntryContainer';
 import RefSignup from '../refAuth/refSignupContainer';
-
-
+import RefDialog from '../refDialog/refDialogForm';
 
 const routes = (props) => {
   return (
@@ -18,6 +17,7 @@ const routes = (props) => {
         <Route path="refi18n" component={Refi18n} />
         <Route path="refdataentry" component={RefDataEntry} />
         <Route path="refsignup" component={RefSignup} />
+        <Route path="refdialog" component={RefDialog} />
       </Route>
     </Router>
   );

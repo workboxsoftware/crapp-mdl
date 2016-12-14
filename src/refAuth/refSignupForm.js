@@ -90,10 +90,10 @@ class RefSignupForm extends Component {
             {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
           </div>
           <section className="Signup-left-side">
-            <div className=""Signup-cloud-parent>
+            <div className="Signup-cloud-parent">
               <img src={clouds} className="Signup-clouds" alt="logo"/>
             </div>
-            <div className=""Signup-cloud-parent>
+            <div className="Signup-cloud-parent">
               <img src={clouds} className="Signup-clouds2" alt="logo"/>
             </div>
             <div className="Signup-grow-area" />

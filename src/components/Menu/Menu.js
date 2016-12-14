@@ -21,6 +21,9 @@ const Menu = () => {
          <Link to="/refsignup" className="mdl-navigation__link">
           Sign-up
         </Link>
+        <Link to="/refdialog" className="mdl-navigation__link">
+          Dialogs
+        </Link>
       </nav>
     </div>
   );
