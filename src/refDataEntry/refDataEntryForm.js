@@ -35,7 +35,7 @@ class RefDataEntryForm extends Component {
         </fieldset>
         <br /><br />
         <form onSubmit={handleSubmit(this.props.validateAndUpdateTimesheet.bind(this))}>
-          <Field component={WbxTextfield} type="text" name="client"  label="Client" persistentHelpText="This is the client you're going to bill." />
+          <Field component={WbxTextfield} autofocus type="text" name="client"  label="Client" persistentHelpText="This is the client you're going to bill." />
           <Field component={WbxTextfield} type="number" name="project" onFocusHelpText="wazup:what's up"/>
           <Field component={WbxTextfield} type="currency" name="billingRate" label="Hourly Billing Rate" />
           <Field component={WbxTextfield} type="number" name="hoursWorked"   />

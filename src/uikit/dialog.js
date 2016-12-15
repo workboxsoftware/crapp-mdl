@@ -32,16 +32,16 @@ const defaultStyle = {
     bottom: 0,
     position: 'fixed',
     display: 'flex',
-    // boxSizing: 'border-box',
-    // border : '1px solid rgba(0, 0, 0, .2)',
-    // boxShadow : '0 5px 10px rgba(0, 0, 0, .3)',
+    boxSizing: 'border-box',
+    border : '2px solid rgba(0, 0, 0, .2)',
+    boxShadow : '0 8px 16px rgba(0, 0, 0, .5)',
     width: 400,
     height: 500,
     maxHeight: '100%',
     maxWidth: '100%',
     backgroundColor: '#fff',
     WebkitOverflowScrolling: 'touch',
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
     margin: 'none'
   }
 }

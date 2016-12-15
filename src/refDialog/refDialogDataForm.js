@@ -57,6 +57,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 //
-// const dataEntry = connect(null, mapDispatchToProps)(RefDialogDataForm);
-// export default injectIntl(dataEntry);
-export default RefDialogDataForm;
+
+function mapStateToProps(state, ownProps) {
+  return {
+    application: state.application
+  };
+}
+
+
+const dataEntry = connect(mapStateToProps, mapDispatchToProps)(RefDialogDataForm);
+export default injectIntl(dataEntry);
