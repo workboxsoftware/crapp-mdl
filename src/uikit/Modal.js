@@ -3,21 +3,7 @@ import ReactDOM from 'react-dom';
 import Assign from 'lodash.assign';
 import {store} from '../index';
 import {Provider} from 'react-redux';
-import {addLocaleData} from 'react-intl';
-import {IntlProvider} from 'react-intl';
-import applicationReducer from '..//application/applicationReducer';
-import authReducer from '../refAuth/redux';
-import {AUTH_USER, UNAUTH_USER} from '../refAuth/redux'
-import en from 'react-intl/lib/locale-data/en'
-import fr from 'react-intl/lib/locale-data/fr'
-import de from 'react-intl/lib/locale-data/de'
-// import es from 'react-intl/lib/locale-data/es'
 import ConnectedIntlProvider from '../utils/connectedIntlProvider';
-import * as i18n from '../i18n'
-addLocaleData(en);
-addLocaleData(fr);
-addLocaleData(de);
-
 const prefix = require('react-prefixr');
 
 
@@ -156,7 +142,6 @@ export class Modal extends Component {
           opacity: open ? 1 : 0
         }))}
         onClick={this.close.bind(this)}>
-
         <div
           ref="content"
           style={prefix(Assign({},

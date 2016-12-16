@@ -7,7 +7,8 @@ import FmtMsg from '../widgets/fmtMsg';
 import rocket from '../images/rocket.svg';
 import './styles.css'
 import clouds from '../images/clouds1.png';
-
+import Alert from '../uikit/alert';
+import {ModalManager} from '../uikit/index';
 const inline = {
   signupLabel: {
     color: "mdl-color-text--primary"
@@ -16,15 +17,15 @@ const inline = {
 
 class RefSignupForm extends Component {
 
+  componentDidUpdate() {
+    if (this.props.auth.error) {
+      ModalManager.open(<Alert content={this.props.auth.error} title="Authorization Error"/>);
+      this.props.dispatch(this.props.authClearError());
+    }
+  }
 
   renderAlert() {
-    if (this.props.auth.error) {
-      return (
-        <h5 className="Signup-error">
-          {this.props.auth.error}
-        </h5>
-      );
-    }
+
   }
 
   showSignupScreen() {
@@ -96,7 +97,7 @@ class RefSignupForm extends Component {
             <div className="Signup-cloud-parent">
               <img src={clouds} className="Signup-clouds2" alt="logo"/>
             </div>
-            <div className="Signup-grow-area" />
+            <div className="Signup-grow-area"/>
             <img src={rocket} alt="Welcome to Workbox" className={'Signup-img-area' + screenNumber}/>
           </section>
           <section className="Signup-right-side mdl-color-text--primary">

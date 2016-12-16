@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import componentHandler from 'exports?componentHandler!material-design-lite/material';
 import { Modal, ModalManager } from './index';
-import './dialogStyles.css';
+import './modalStyles.css';
 
 const defaultEffect = {
   transition: {
     property: 'all',
-    duration: 250,
+    duration: 200,
     // timingfunction: 'cubic-bezier(.87,-.41,.19,1.44)'
     timingfunction: 'cubic-bezier(.87,-.21,.19,1.24)'
   },
@@ -18,12 +18,12 @@ const defaultEffect = {
     'transform': 'scale(1)',
     'opacity': 1
   }
-}
+};
 
 const defaultStyle = {
   overlay: {
-    height: '100vh',
-    width: '100vw',
+    height          : '100vh',
+    width           : '100vw',
     backgroundColor : 'rgba(30, 30, 30, .40)',
     display: 'flex',
     alignItems: 'center',
@@ -32,8 +32,8 @@ const defaultStyle = {
 
   content: {
     position         : 'relative',
-    paddingTop       : '20px',
-    paddingLeft      : '20px',
+    // paddingTop       : '20px',
+    // paddingLeft      : '20px',
     boxSizing        : 'border-box',
     border           : 'none',
     margin           : '15% auto',
@@ -43,9 +43,9 @@ const defaultStyle = {
     width            : 400,
     maxWidth         : '60%',
     backgroundColor  : '#fff',
-    WebkitOverflowScrolling: 'touch',
+    WebkitOverflowScrolling: 'touch'
   }
-}
+};
 
 class Alert extends Component {
   // regular housekeeping needed for mdl
@@ -66,9 +66,6 @@ class Alert extends Component {
       myStyle = {...defaultStyle, ...{content: x}}
     }
 
-    console.log(myStyle);
-    console.log(defaultStyle);
-
     return (
       <Modal
         effect={effect ? effect : defaultEffect}
@@ -76,14 +73,14 @@ class Alert extends Component {
         onRequestClose={() => true}
       >
         <div className="Alert-body">
-          <div id="alert" className="Alert.dialog">
+          <div id="alert" className="Alert-dialog">
             <h4 className="Alert-dialog__title">{title}</h4>
             <div className="Alert-dialog__content">
               <p>{content}</p>
             </div>
             <div className="mdl-dialog__actions">
               <button type="button"
-                      className="mdl-button mdl-js-button mdl-button--primary Alert-button"
+                      className="mdl-button mdl-js-button mdl-button--primary Alert-close-button"
                       ref={(button) => { if (button) button.focus() }}
                       onClick={ModalManager.close}>Close</button>
             </div>

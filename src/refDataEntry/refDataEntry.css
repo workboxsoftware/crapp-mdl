@@ -1,0 +1,9 @@
+.Dataentry-footer {
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+}
+
+.Dataentry-form {
+  margin-bottom: 40px;
+}

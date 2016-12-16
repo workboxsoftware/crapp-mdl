@@ -8,7 +8,7 @@ import reduxThunk from 'redux-thunk';
 import {combineReducers} from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form'
 import {addLocaleData} from 'react-intl';
-import {IntlProvider} from 'react-intl';
+// import {IntlProvider} from 'react-intl';
 import applicationReducer from './application/applicationReducer';
 import authReducer from './refAuth/redux';
 import { AUTH_USER, UNAUTH_USER } from './refAuth/redux'

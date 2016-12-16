@@ -3,6 +3,7 @@
 export const AUTH_USER = 'auth_user';
 export const UNAUTH_USER = 'unauth_user';
 export const AUTH_ERROR = 'auth_error';
+export const AUTH_CLEAR_ERROR = 'clear_error';
 
 
 export function signupUser({ email, username, password }) {
@@ -19,6 +20,14 @@ export function signupUser({ email, username, password }) {
     }
   }
 }
+
+export const authClearError = () => {
+  return {
+    type: AUTH_CLEAR_ERROR
+  };
+};
+
+
 
 export function authError(error) {
   return {
@@ -42,6 +51,9 @@ export default function(state = {}, action) {
       return { ...state, authenticated: false, token:'' };
     case AUTH_ERROR:
       return { ...state, error: action.payload };
+    case AUTH_CLEAR_ERROR:
+      const newState = {...state, error:''};
+      return newState;
     default:
       return state;
   }

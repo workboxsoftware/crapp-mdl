@@ -48,6 +48,7 @@ class WbxTextfield extends Component {
     const { input, label, type, rows } = this.props;
     const {formatMessage} = this.props.intl;
     const tr = new translateText(formatMessage);
+    const name = this.props.input.name;
   
     // Here are the steps involed in getting the label.  
     // NOTE --> label is the what redux-form calls the prompt.
@@ -56,7 +57,7 @@ class WbxTextfield extends Component {
     //             use the field name (but decamelCase it).  For example,
     //             billingRate is converted to Billing Rate.
     // 2nd step:  See if there's a translation.  Use the field name as the key.
-    const defaultLabel = (label) ? label : deCamelCase(this.props.input.name);
+    const defaultLabel = (label) ? label : deCamelCase(name);
     const finalLabel = tr.msgId(input.name, defaultLabel)
 
     // if input type is numeric, then set pattern. MDL only gives a very simplistic
@@ -86,7 +87,6 @@ class WbxTextfield extends Component {
         break;
     }
 
-
       // for some reason html type = number doesn't like decimal points
       // so just rely on pattern to make ok
       // const myType = (type === 'number') ? 'text' : type;
@@ -99,13 +99,26 @@ class WbxTextfield extends Component {
       <div>
         { rows ? (   // if rows prop passed in then assume it's a 'textarea'
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <textarea className="mdl-textfield__input" {...input} id="fieldId" autoComplete="off" />
+            <textarea
+              className="mdl-textfield__input"
+              {...input}
+              id="fieldId"
+              autoComplete="off"
+              ref={this.props.setFocus ? (input) => { if (input) input.focus() } : ''}
+            />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
           </div>
         ) : (
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input className="mdl-textfield__input" {...input} type={myType} id="fieldId" autoComplete="off" {...pattern} />
+            <input className="mdl-textfield__input"
+                   {...input}
+                   type={myType}
+                   id="fieldId"
+                   autoComplete="off"
+                   {...pattern}
+                   ref={this.props.setFocus ? (input) => { if (input) input.focus() } : ''}
+            />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
           </div>
