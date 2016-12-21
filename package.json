@@ -23,6 +23,7 @@
     "redux-form": "^6.2.0",
     "redux-router": "^2.1.2",
     "redux-thunk": "^2.1.0",
+    "scroll-into-view-if-needed": "^1.0.6",
     "webpack": "^1.14.0"
   },
   "scripts": {
