@@ -1,19 +1,20 @@
+
 .Signup-container {
   display: flex;
   height: calc(100vh - 55px);
   flex-direction: row
 }
 
-.Signup-spinner {
-  position:fixed;
-  z-index:99;/* make higher than whatever is on the page */
-  top:80px;
-  left:0;
-  right:0;
-  margin:auto;
-  width:20px;
-  height:20px;
-}
+/*.Signup-spinner {*/
+  /*position:fixed;*/
+  /*z-index:99;!* make higher than whatever is on the page *!*/
+  /*top:80px;*/
+  /*left:0;*/
+  /*right:0;*/
+  /*margin:auto;*/
+  /*width:20px;*/
+  /*height:20px;*/
+/*}*/
 
 .Signup-error {
   color:red;
@@ -134,5 +135,5 @@
 
 @keyframes Signup-rocket-lift {
   0% {margin-bottom: 0px}
-  100% {margin-bottom: 400px;}
+  100% {margin-bottom: 250px;}
 }

@@ -7,7 +7,6 @@ import {injectIntl} from 'react-intl';
 import {switchLocale} from '../application/applicationActions';
 import './refDataEntry.css';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import { validateAndUpdateTimesheet } from './refDataEntryContainer';
 
 class RefDataEntryForm extends Component {
   // static contextTypes = {
@@ -18,18 +17,19 @@ class RefDataEntryForm extends Component {
     super(props);
     // this.focusField = 'client';
     // this.props.handleSubmitFail.bind(this);
-    this.errRef = {};
-
-
+    this.elRef = [];
   }
 
+  componentDidMount() {
+    // start off giving focus to email
+    this.elRef["client"].focus();
+  }
+
+
   componentDidUpdate() {
-    if (this.props.errorNotif && this.errRef) {
-      // errors come back as an array of objects.
-      // the object is field: error
-      // this takes the key of the first item in the array
+    if (this.props.errorNotif && this.elRef) {
       const field = Object.keys(this.props.errorNotif.errors)[0]
-      const ref = this.errRef[field];
+      const ref = this.elRef[field];
       if (ref) {
         ref.focus();
         scrollIntoViewIfNeeded(ref, false, {
@@ -46,33 +46,21 @@ class RefDataEntryForm extends Component {
     const {handleSubmit, submitting} = this.props;
 
     return (
-      <div className="dataEntry">
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div className="RefDataEntry dataEntry">
+        <div className="loading">
           {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
         </div>
-        <fieldset>
-          <select ref="langSwitcher" value={locale}
-                  onChange={this.props.onLocaleChange}>
-            <option value="en-US">English US</option>
-            <option value="fr-FR">french-France</option>
-            <option value="de">german-Germany</option>
-            <option value="en-IN">english - India</option>
-            <option value="es-AR">spanish - Argentina</option>
-          </select>
-        </fieldset>
         <br /><br />
-        <form onSubmit={handleSubmit(validateAndUpdateTimesheet.bind(this))}>
-          <Field component={WbxTextfield} errRef={this.errRef} type="text" name="client" label="Client"
-                 persistentHelpText="This is the client you're going to bill."/>
-          <Field component={WbxTextfield} errRef={this.errRef} type="number" name="project"
-                 onFocusHelpText="wazup:what's up"/>
-          <Field component={WbxTextfield} focusField={this.focusField} type="currency" name="billingRate"
+        <form onSubmit={handleSubmit(this.props.updateDatabase.bind(this))}>
+          <Field component={WbxTextfield} elRef={this.elRef} type="text" name="client" label="Client"/>
+          <Field component={WbxTextfield} elRef={this.elRef} type="number" name="project"/>
+          <Field component={WbxTextfield} elRef={this.elRef} type="currency" name="billingRate"
                  label="Hourly Billing Rate"/>
-          <Field component={WbxTextfield} type="number" errRef={this.errRef} name="hoursWorked"
+          <Field component={WbxTextfield} type="number" elRef={this.elRef} name="hoursWorked"
                  focusField={this.focusField}/>
-          <Field component={WbxTextfield} type="text" errRef={this.errRef} name="invoiceComment"
+          <Field component={WbxTextfield} type="text" elRef={this.elRef} name="invoiceComment"
                  focusField={this.focusField}/>
-          <Field component={WbxTextfield} type="text" errRef={this.errRef} rows={5} name="notes"
+          <Field component={WbxTextfield} type="text" elRef={this.elRef} rows={5} name="notes"
                  focusField={this.focusField}/>
 
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
@@ -87,7 +75,7 @@ class RefDataEntryForm extends Component {
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
-          <Field component={WbxTextfield} errRef={this.errRef} type="text" name="category"
+          <Field component={WbxTextfield} elRef={this.elRef} type="text" name="category"
                  focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
@@ -123,7 +111,7 @@ class RefDataEntryForm extends Component {
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
-          <Field component={WbxTextfield} type="text" errRef={this.errRef} name="vendor" focusField={this.focusField}/>
+          <Field component={WbxTextfield} type="text" elRef={this.elRef} name="vendor" focusField={this.focusField}/>
           <Field component={WbxTextfield} type="number" name="hoursWorked" focusField={this.focusField}/>
           <div>
             <WbxButton disabled={submitting} type="submit">Submit</WbxButton>

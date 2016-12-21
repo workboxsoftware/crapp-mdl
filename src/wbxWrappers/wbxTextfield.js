@@ -52,7 +52,7 @@ class WbxTextfield extends Component {
     const tr = new translateText(formatMessage);
     const name = this.props.input.name;
 
-    const errRef = this.props.errRef;
+    const elRef = this.props.elRef;
 
     if (error) {
       // debugger;
@@ -120,7 +120,7 @@ class WbxTextfield extends Component {
                    type={myType}
                    autoComplete="off"
                    {...pattern}
-                   ref={(input) => { if (input  && errRef ) { errRef[name] = input }}}
+                   ref={(input) => { if (input  && elRef ) { elRef[name] = input }}}
             />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>

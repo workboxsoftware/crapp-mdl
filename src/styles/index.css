@@ -1,3 +1,5 @@
+
+
 body {
   font-family: "Roboto", sans-serif;
 }
@@ -72,4 +74,12 @@ ul {
 
 .dataEntry {
   margin: 20px;
+}
+
+.loading {
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  top: 90px;
+  zIndex: 99999999;
 }

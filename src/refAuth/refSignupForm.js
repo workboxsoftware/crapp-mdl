@@ -9,42 +9,40 @@ import './styles.css'
 import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
-
-const inline = {
-  signupLabel: {
-    color: "mdl-color-text--primary"
-  }
-}
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
 
 class RefSignupForm extends Component {
 
-
-  constructor(props) {
+ constructor(props) {
     super(props);
-    this.focusField = 'username';
-    this.refMap = new Map();
+    this.elRef = {};
+  }
 
-    let usernameRef;
-
-    // const {handleSubmit} = this.props;
-    //
-    // const submitFn = (event) => handleSubmit(this.props.validateAndUpdateInfo)(event)
-    //   .catch(err => {
-    //     console.log("got errs from submit", err)
-    //   })
-
+  componentDidMount() {
+    // start off giving focus to email
+    this.elRef["email"].focus();
   }
 
   componentDidUpdate() {
-    this.focusField = '';
+    // Show alert box if needed
     if (this.props.auth.error) {
       ModalManager.open(<Alert content={this.props.auth.error} title="Authorization Error"/>);
       this.props.dispatch(this.props.authClearError());
     }
 
-    this.refMap.get("username").focus();
-   
+    // position cursor and scroll if needed
+    if (this.props.errorNotif && this.elRef) {
+      const field = Object.keys(this.props.errorNotif.errors)[0]
+      const ref = this.elRef[field];
+      if (ref) {
+        ref.focus();
+        scrollIntoViewIfNeeded(ref, false, {
+          duration: 150
+        })
+      }
+      this.props.errorNotificationDelete(this.props.errorNotif.form);
+    }
   }
 
   showSignupScreen() {
@@ -54,21 +52,21 @@ class RefSignupForm extends Component {
       <div>
         <form onSubmit={handleSubmit(this.props.validateAndUpdateSignup.bind(this))}>
           <h3>
-            <FmtMsg style={inline.signupLabel}>signup:Sign up</FmtMsg>
+            <FmtMsg className="mdl-color-text--primary">signup:Sign up</FmtMsg>
           </h3>
           <div className="Signup-input-area">
-            <Field component={WbxTextfield} refMap={this.refMap} type="email" label="Your email address"
+            <Field component={WbxTextfield} elRef={this.elRef} type="email" label="Your email address"
                    name="email"/>
-            <Field component={WbxTextfield} refMap={this.refMap} type="text" label="Choose a username"
+            <Field component={WbxTextfield} elRef={this.elRef} type="text" label="Choose a username"
                    name="username"/>
-            <Field component={WbxTextfield}  refMap={this.refMap} focusField={this.focusField} type="password" lablel="Choose a password"
+            <Field component={WbxTextfield} elRef={this.elRef} type="password" lablel="Choose a password"
                    name="password"/>
           </div>
           <p className="Signup-align-right">
             <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
           </p>
           <div className="Signup-accept-area">
-            <section style={inline.acceptText}>By signing up you agree to the Terms of Service
+            <section className="Signup-accept-area">By signing up you agree to the Terms of Service
               and Privacy Policy.
             </section>
           </div>
@@ -83,7 +81,7 @@ class RefSignupForm extends Component {
     return (
       <form onSubmit={handleSubmit(this.props.validateAndUpdateInfo.bind(this))}>
         <h3>
-          <FmtMsg style={inline.signupLabel}>signup.more:Almost there...</FmtMsg>
+          <FmtMsg className="mdl-color-text--primary">signup.more:Almost there...</FmtMsg>
         </h3>
         <div className="Signup-input-area">
           <Field component={WbxTextfield} type="text" label="Your first name" name="firstName"/>
@@ -97,6 +95,8 @@ class RefSignupForm extends Component {
 
     );
   }
+
+
 
   render() {
 

@@ -1,9 +1,3 @@
-.Dataentry-footer {
-  position: fixed;
-  bottom: 0;
-  height: 40px;
-}
-
-.Dataentry-form {
+.RefDataEntry {
   margin-bottom: 40px;
 }

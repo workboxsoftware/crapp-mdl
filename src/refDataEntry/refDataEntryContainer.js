@@ -28,13 +28,11 @@ function validate(values) {
     errors.vendor = "no-vendor: Enter Vendor";
   }
 
-
-
   return errors;
 }
 
 // update the database
-export const validateAndUpdateTimesheet = (values, dispatch) => {
+export const updateDatabase = (values, dispatch) => {
 
   return sleep(1000) // simulate server latency
     .then(() => {
@@ -70,11 +68,11 @@ function mapStateToProps(state, ownProps) {
   // get this forms data
   let items = state.notif.filter(err => err.form === formName);
   const errorNotif = (items.length > 0) ? items[0]: undefined;
-
   return {
     initialValues: INITIAL_VALUES,
     application: state.application,
-    errorNotif
+    updateDatabase,
+    errorNotif,
   };
 }
 
@@ -85,7 +83,6 @@ const TsForm = reduxForm({
   validate,
   onSubmitFail:(errors, dispatch) => {
     dispatch(errorNotificationInsert(formName, errors))
-    console.log("submit fail errors", errors);
   }
 })(RefDataEntryForm)
 
