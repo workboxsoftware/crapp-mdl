@@ -11,6 +11,7 @@ import {addLocaleData} from 'react-intl';
 // import {IntlProvider} from 'react-intl';
 import applicationReducer from './application/applicationReducer';
 import authReducer from './refAuth/redux';
+import notifReducer from './utils/redux';
 import { AUTH_USER, UNAUTH_USER } from './refAuth/redux'
 import en from 'react-intl/lib/locale-data/en'
 import fr from 'react-intl/lib/locale-data/fr'
@@ -25,7 +26,8 @@ addLocaleData(de);
 const rootReducer = combineReducers({
   form: reduxFormReducer,
   application: applicationReducer,
-  auth: authReducer
+  auth: authReducer,
+  notif: notifReducer
 });
 
 // if we've got a saved locale, then use it.

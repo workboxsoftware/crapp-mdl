@@ -51,6 +51,14 @@ const validateAndUpdateSignup = (values, dispatch) => {
         errors.push({password: "password-8: Password must be at least 8 characters"});
       }
 
+      errors.push({
+          _errors: {
+            field: "email",
+            needUpdate: true
+          }
+        }
+      )
+
       // if errors, then go back and display
       // otherwise, set call action creator to authenticate.
       // if this is good, we'll get called back and can continue
@@ -72,17 +80,24 @@ const validateAndUpdateInfo = (values, dispatch) => {
 
 };
 
+const handleSubmitFail = (errors, dispatch) => {
+
+  console.log("submit fail errors", errors);
+}
+
+
 // pass in validation for signup and info
 // also the action creator for signup user
 const mapDispatchToProps = (dispatch) => {
   return {
     validateAndUpdateSignup,
     validateAndUpdateInfo,
-    authClearError
+    authClearError,
+    handleSubmitFail
   }
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     auth: state.auth,
     application: state.application,
@@ -90,10 +105,19 @@ function mapStateToProps(state) {
 }
 
 
-// need two HOC's - one for reduxForm and the other for connect
-const form = reduxForm({
+// need three HOC's here - reduxForm, a selector and connect
+let form = reduxForm({
   form: 'signupForm', // a unique identifier for this form
-  validate
+  validate,
+  onSubmitFail:(errors, dispatch) => {
+    console.log("submit fail errors", errors);
+  }
 })(RefSignupForm);
+
+
+// crazy stuff to get errors sent back as props
+// form = connect((state) => ({
+//   errors: getFormSubmitErrors('signupForm')(state)
+// }))(form);
 
 export default connect(mapStateToProps, mapDispatchToProps)(form)

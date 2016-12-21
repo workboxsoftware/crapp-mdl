@@ -9,23 +9,42 @@ import './styles.css'
 import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
+
 const inline = {
   signupLabel: {
     color: "mdl-color-text--primary"
   }
 }
 
+
 class RefSignupForm extends Component {
 
+
+  constructor(props) {
+    super(props);
+    this.focusField = 'username';
+    this.refMap = new Map();
+
+    let usernameRef;
+
+    // const {handleSubmit} = this.props;
+    //
+    // const submitFn = (event) => handleSubmit(this.props.validateAndUpdateInfo)(event)
+    //   .catch(err => {
+    //     console.log("got errs from submit", err)
+    //   })
+
+  }
+
   componentDidUpdate() {
+    this.focusField = '';
     if (this.props.auth.error) {
       ModalManager.open(<Alert content={this.props.auth.error} title="Authorization Error"/>);
       this.props.dispatch(this.props.authClearError());
     }
-  }
 
-  renderAlert() {
-
+    this.refMap.get("username").focus();
+   
   }
 
   showSignupScreen() {
@@ -33,15 +52,17 @@ class RefSignupForm extends Component {
 
     return (
       <div>
-        {this.renderAlert()}
         <form onSubmit={handleSubmit(this.props.validateAndUpdateSignup.bind(this))}>
           <h3>
             <FmtMsg style={inline.signupLabel}>signup:Sign up</FmtMsg>
           </h3>
           <div className="Signup-input-area">
-            <Field component={WbxTextfield} type="email" label="Your email address" name="email"/>
-            <Field component={WbxTextfield} type="text" label="Choose a username" name="username"/>
-            <Field component={WbxTextfield} type="password" lablel="Choose a password" name="password"/>
+            <Field component={WbxTextfield} refMap={this.refMap} type="email" label="Your email address"
+                   name="email"/>
+            <Field component={WbxTextfield} refMap={this.refMap} type="text" label="Choose a username"
+                   name="username"/>
+            <Field component={WbxTextfield}  refMap={this.refMap} focusField={this.focusField} type="password" lablel="Choose a password"
+                   name="password"/>
           </div>
           <p className="Signup-align-right">
             <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
@@ -112,6 +133,6 @@ class RefSignupForm extends Component {
 export default injectIntl(RefSignupForm);
 
 
-
+//ref={(input) => { this.usernameRef = input; }}
 
 

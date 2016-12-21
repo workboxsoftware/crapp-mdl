@@ -22,6 +22,7 @@ import deCamelCase  from '../utils/deCamelCase';
 function ErrorHandler({ input, label, type, intl: { formatMessage }, meta: { submitting, touched, error } }) {
 
   if ((touched || submitting) && error) {
+    // debugger;
     const tr = new translateText(formatMessage);
     const translatedText = tr.text(error);
     return  <span className="wbx-textfield__error">{translatedText}</span>
@@ -47,8 +48,16 @@ class WbxTextfield extends Component {
   render() {
     const { input, label, type, rows } = this.props;
     const {formatMessage} = this.props.intl;
+    const { error, submitting } = this.props.meta;
     const tr = new translateText(formatMessage);
     const name = this.props.input.name;
+
+    const errRef = this.props.errRef;
+
+    if (error) {
+      // debugger;
+      console.log("got error", error);
+    }
   
     // Here are the steps involed in getting the label.  
     // NOTE --> label is the what redux-form calls the prompt.
@@ -71,8 +80,6 @@ class WbxTextfield extends Component {
       // right away.  This is the best regex that I
       // could find: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-
-
     let pattern = '';
     let myType = type;
     switch (type) {
@@ -91,10 +98,7 @@ class WbxTextfield extends Component {
       // so just rely on pattern to make ok
       // const myType = (type === 'number') ? 'text' : type;
 
-      // if (type === 'password') {
-      //   debugger;
-      //   console.log('got password');
-     // }
+
     return (
       <div>
         { rows ? (   // if rows prop passed in then assume it's a 'textarea'
@@ -104,7 +108,7 @@ class WbxTextfield extends Component {
               {...input}
               id="fieldId"
               autoComplete="off"
-              ref={this.props.setFocus ? (input) => { if (input) input.focus() } : ''}
+              ref={name}
             />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
@@ -114,10 +118,9 @@ class WbxTextfield extends Component {
             <input className="mdl-textfield__input"
                    {...input}
                    type={myType}
-                   id="fieldId"
                    autoComplete="off"
                    {...pattern}
-                   ref={this.props.setFocus ? (input) => { if (input) input.focus() } : ''}
+                   ref={(input) => { if (input  && errRef ) { errRef[name] = input }}}
             />
             <label className="mdl-textfield__label" htmlFor="fieldId">{finalLabel}</label>
             <ErrorHandler {...this.props}/>
@@ -130,3 +133,6 @@ class WbxTextfield extends Component {
 
 export default injectIntl(WbxTextfield);
 
+//ref={this.props.setFocus ? (input) => { if (input) input.focus() } : ''}
+
+// ref={this.props.focusField === name ? (input) => { if (input) input.focus() } : ''}
