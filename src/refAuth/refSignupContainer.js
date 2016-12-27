@@ -19,6 +19,11 @@ function validate(values) {
     errors.email = "signup.email:Enter Email Address";
   }
 
+  const re = /^\S+@\S+$/;
+  if ( ! re.test(values.email)) {
+    errors.email = "signup.email:Invalid Email";
+  }
+
   if (!values.username || values.username.trim() === '') {
     errors.username = "signup.nousername:Enter a username";
   }

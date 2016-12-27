@@ -5,16 +5,54 @@
   flex-direction: row
 }
 
-/*.Signup-spinner {*/
-  /*position:fixed;*/
-  /*z-index:99;!* make higher than whatever is on the page *!*/
-  /*top:80px;*/
-  /*left:0;*/
-  /*right:0;*/
-  /*margin:auto;*/
-  /*width:20px;*/
-  /*height:20px;*/
-/*}*/
+.Signup-password-hint {
+  font-size: 5.5pt !important;
+  display:flex;
+  flex-direction:column;
+}
+
+.Signup-password-hint ul {
+  list-style: none;
+  margin: 0 0 -7px 0;
+  padding: 0px;
+  display: flex;
+}
+
+.Signup-password-hint li {
+
+  font-size: 9pt;
+  padding: 0px;
+  list-style: none;
+  margin: 0;
+}
+
+.Signup li.checkmark:before
+{
+  content: '\2713';
+  margin: 0 .6em 0 0;
+  color: green;
+}
+
+.Signup li.checkmark {
+  color: lightgray;
+  margin: 0;
+}
+
+.Signup li:before
+{
+  content: '\2718';
+  margin: 0 .6em 0 0;
+  color: rgb(192,192,192);
+  float: left;
+}
+
+.Signup-good {
+  color:green;
+}
+
+.Signup-password-hint li.plus20 {
+  margin-right: 17px;
+}
 
 .Signup-error {
   color:red;
@@ -26,20 +64,20 @@
 /*}*/
 
 .Signup-left-side {
-  flex: 1;
+  display:flex;
   flex-grow: 1;
   text-align: center;
-  display: flex;
+  /*display: flex;*/
   flex-direction: column;
-  max-width: 200px;
-  min-width: 125px;
+  max-width: 150px;
+  min-width: 100px;
   background-color: rgba(255,64,129,.2);
   overflow: hidden;
 }
 
 .Signup-right-side {
-  flex: 1;
-  flex-grow: 3;
+  display: flex;
+  flex-grow: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,67 +105,78 @@
   top: 90px;
 }
 
-.Signup-accept-area {
-  font-size: 12px;
-  color: rgb(192,192,192);
-  max-width: 300px;
+.Signup-bottom {
+  display: flex;
+  margin-top: 35px;
+  justify-content: space-between;
 }
+
+.Signup-accept-label {
+  font-size: 11px;
+  color: rgb(192,192,192);
+  max-width: 180px;
+}
+
+.Signup-submit-button {
+  /*margin-right: 8px;*/
+}
+
 
 .Signup-cloud-parent {
   /*flexShrink: 1;*/
   min-width: 0;
   min-height: 60px;
   background-color: transparent;
-  flex-grow: 1;
+  height:40%;
 }
 
-.Signup-clouds {
+.Signup-clouds1 {
   position :relative;
-  width: 35px;
-  margin-top: 20px;
-  left: 150px;
+  width: 30px;
+  margin-top: 25%;
+  left: 100px;
   animation: Signup-clouds-anim 25s infinite linear;
 }
 
 .Signup-clouds2 {
   position :relative;
-  width: 40px;
-  margin-top: 50px;
-  left: -200px;
-  animation: Signup-clouds-anim 15s infinite linear;
-  animation-delay: 20s;
+  width: 35px;
+  margin-top: 20%;
+  /*margin-bottom: 70px;*/
+  left: -150px;
+  animation: Signup-clouds-anim 25s infinite linear;
+  animation-delay: 13s;
 }
+
 
 @keyframes Signup-clouds-anim {
   0%   {left: -175px;}
   100% {left: 90%}
 }
 
-.Signup-img-parent {
-  /*flex-shrink: 1;*/
-  min-width: 0;
-  min-height: 0;
-  flex-grow: 1;
-  background-color: yellow;
-  margin-top: auto;
+.Signup-rocket-parent {
+  height:60%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction:column;
 }
 
-.Signup-img-area1 {
+.Signup-rocket-area1 {
   width: auto;
   height: auto;
   max-width: 50%;
   max-height: 50%;
-  align-self: center;
-  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.Signup-img-area2 {
+.Signup-rocket-area2 {
   width: auto;
   height: auto;
   max-width: 50%;
   max-height: 50%;
-  align-self: center;
-  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
   animation: Signup-rocket-lift 8s ease;
   animation-fill-mode: forwards;
   overflow: visible;;
@@ -135,5 +184,5 @@
 
 @keyframes Signup-rocket-lift {
   0% {margin-bottom: 0px}
-  100% {margin-bottom: 250px;}
+  100% {margin-bottom:calc(100vh / 3);}
 }

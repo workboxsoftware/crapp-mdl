@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field} from 'redux-form';
+import {Field, Fields} from 'redux-form';
 import WbxButton from '../wbxWrappers/wbxButton';
 import WbxTextfield from '../wbxWrappers/wbxTextfield';
 import {injectIntl} from 'react-intl';
@@ -11,12 +11,45 @@ import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
+const isLowerCase = char => char.toLowerCase() && char !== char.toUpperCase();
+const isUpperCase = char => char.toUpperCase() && char !== char.toLowerCase();
+
+const passwordHints = (fields) => {
+  const pw = fields.password.input.value;
+  let lowercaseClass, uppercaseClass, numberClass, lengthClass;
+
+  // is there a lowercase letter
+  for (let i = 0, char; i < pw.length; i++) {
+    char = pw.charAt(i);
+    if (isLowerCase(char)) lowercaseClass = "checkmark";
+    if (isUpperCase(char)) uppercaseClass = "checkmark";
+    if (char >= "0" && char <= "9") numberClass = "checkmark";
+  }
+  if (pw.length > 7) {
+    lengthClass = "checkmark";
+  }
+  return (
+    <div>
+      <div className="Signup-password-hint">
+        <ul>
+          <li className={`${uppercaseClass} plus20`}>One uppercase character</li>
+          <li className={numberClass}>One number</li>
+        </ul>
+        <ul>
+          <li className={`${lowercaseClass} plus20`}>One lowercase character</li>
+          <li className={lengthClass}>8 characters minimum</li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+
 
 class RefSignupForm extends Component {
 
- constructor(props) {
+  constructor(props) {
     super(props);
-    this.elRef = {};
+    this.elRef = [];
   }
 
   componentDidMount() {
@@ -49,7 +82,7 @@ class RefSignupForm extends Component {
     const {handleSubmit, submitting} = this.props;
 
     return (
-      <div>
+      <div className="Signup">
         <form onSubmit={handleSubmit(this.props.validateAndUpdateSignup.bind(this))}>
           <h3>
             <FmtMsg className="mdl-color-text--primary">signup:Sign up</FmtMsg>
@@ -62,14 +95,17 @@ class RefSignupForm extends Component {
             <Field component={WbxTextfield} elRef={this.elRef} type="password" lablel="Choose a password"
                    name="password"/>
           </div>
-          <p className="Signup-align-right">
-            <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
-          </p>
-          <div className="Signup-accept-area">
-            <section className="Signup-accept-area">By signing up you agree to the Terms of Service
+          <Fields names={['password']} component={passwordHints}/>
+
+
+          <section className="Signup-bottom mdl-color-text--primary">
+            <div className="Signup-accept-label">By signing up you agree to the Terms of Service
               and Privacy Policy.
-            </section>
-          </div>
+            </div>
+            <div className="Signup-submit-button">
+              <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
+            </div>
+          </section>
         </form>
       </div>
     )
@@ -97,7 +133,6 @@ class RefSignupForm extends Component {
   }
 
 
-
   render() {
 
     const {auth, submitting} = this.props;
@@ -113,13 +148,19 @@ class RefSignupForm extends Component {
           </div>
           <section className="Signup-left-side">
             <div className="Signup-cloud-parent">
-              <img src={clouds} className="Signup-clouds" alt="logo"/>
+              <div>
+                <img src={clouds} className="Signup-clouds1" alt="logo"/>
+                {/*</div>*/}
+                {/*<div className="Signup-cloud-parent">*/}
+              </div>
+              <div>
+                <img src={clouds} className="Signup-clouds2" alt="logo"/>
+              </div>
             </div>
-            <div className="Signup-cloud-parent">
-              <img src={clouds} className="Signup-clouds2" alt="logo"/>
+            {/*<div className="Signup-grow-area"/>*/}
+            <div className="Signup-rocket-parent">
+              <img src={rocket} alt="Welcome to Workbox" className={'Signup-rocket-area' + screenNumber}/>
             </div>
-            <div className="Signup-grow-area"/>
-            <img src={rocket} alt="Welcome to Workbox" className={'Signup-img-area' + screenNumber}/>
           </section>
           <section className="Signup-right-side mdl-color-text--primary">
             {(!auth.authenticated) ? this.showSignupScreen() : this.showInfoScreen()}
