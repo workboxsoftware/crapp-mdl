@@ -2,7 +2,7 @@
 .Signup-container {
   display: flex;
   height: calc(100vh - 55px);
-  flex-direction: row
+  flex-direction: row;
 }
 
 .Signup-password-hint {
@@ -14,14 +14,14 @@
 .Signup-password-hint ul {
   list-style: none;
   margin: 0 0 -7px 0;
-  padding: 0px;
+  padding: 0;
   display: flex;
 }
 
 .Signup-password-hint li {
 
   font-size: 9pt;
-  padding: 0px;
+  padding: 0;
   list-style: none;
   margin: 0;
 }
@@ -59,26 +59,20 @@
   max-width: 300px;
 }
 
-/*.Signup-leftside {*/
-  /*max-width: 150px;*/
-/*}*/
-
 .Signup-left-side {
-  display:flex;
-  flex-grow: 1;
+  flex: 1 0 auto;
   text-align: center;
-  /*display: flex;*/
+  display: flex;
   flex-direction: column;
-  max-width: 150px;
-  min-width: 100px;
+  max-width: 140px;
   background-color: rgba(255,64,129,.2);
   overflow: hidden;
 }
 
+
 .Signup-right-side {
   display: flex;
-  flex-grow: 5;
-  display: flex;
+  flex-grow: 7;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -117,72 +111,60 @@
   max-width: 180px;
 }
 
-.Signup-submit-button {
-  /*margin-right: 8px;*/
+.Signup-no-network {
+  max-width: 300px;
+  color: rgb(213,0,0);
+  margin-top: 10px;
 }
-
 
 .Signup-cloud-parent {
-  /*flexShrink: 1;*/
-  min-width: 0;
-  min-height: 60px;
-  background-color: transparent;
-  height:40%;
+  flex: 3 2 30%;
+  align-self: flex-start;
+  width: 100%;
+
 }
 
-.Signup-clouds1 {
-  position :relative;
-  width: 30px;
-  margin-top: 25%;
-  left: 100px;
-  animation: Signup-clouds-anim 25s infinite linear;
-}
-
-.Signup-clouds2 {
+.Signup-clouds {
   position :relative;
   width: 35px;
-  margin-top: 20%;
-  /*margin-bottom: 70px;*/
-  left: -150px;
-  animation: Signup-clouds-anim 25s infinite linear;
-  animation-delay: 13s;
+  margin-top: 30px;
+  vertical-align: top;
+  left: 150px;
+  animation: Signup-clouds-anim 40s infinite linear;
 }
 
+.Signup-clouds-2 {
+  margin-top:80px;
+  vertical-align: top;
+  animation-delay: 30s;
+}
 
 @keyframes Signup-clouds-anim {
-  0%   {left: -175px;}
+  0%   {left: -100px;}
   100% {left: 90%}
 }
 
 .Signup-rocket-parent {
-  height:60%;
+  flex: 7 1 70%;
+  align-self: stretch;
   display: flex;
-  justify-content: flex-end;
-  flex-direction:column;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  width: 100%;
 }
 
-.Signup-rocket-area1 {
-  width: auto;
-  height: auto;
-  max-width: 50%;
-  max-height: 50%;
-  margin-left: auto;
-  margin-right: auto;
+.Signup-rocket-area {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  max-width: 90%;
+  max-height: 90%;
+  align-self: flex-end;
 }
 
-.Signup-rocket-area2 {
-  width: auto;
-  height: auto;
-  max-width: 50%;
-  max-height: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  animation: Signup-rocket-lift 8s ease;
-  animation-fill-mode: forwards;
-  overflow: visible;;
-}
+.Signup-rocket-move {
+  margin-bottom: 40vh;
+  transition: all 3.5s ease;
 
-@keyframes Signup-rocket-lift {
-  0% {margin-bottom: 0px}
-  100% {margin-bottom:calc(100vh / 3);}
 }

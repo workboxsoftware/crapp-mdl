@@ -83,3 +83,7 @@ ul {
   top: 90px;
   zIndex: 99999999;
 }
+
+.has-error {
+  color: rgb(213,0,0);
+}

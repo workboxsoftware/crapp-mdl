@@ -5,43 +5,93 @@ import WbxTextfield from '../wbxWrappers/wbxTextfield';
 import {injectIntl} from 'react-intl';
 import FmtMsg from '../widgets/fmtMsg';
 import rocket from '../images/rocket.svg';
-import './styles.css'
+import './style.css'
 import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
+import Firebase from "firebase";
 
 const isLowerCase = char => char.toLowerCase() && char !== char.toUpperCase();
 const isUpperCase = char => char.toUpperCase() && char !== char.toLowerCase();
 
-const passwordHints = (fields) => {
-  const pw = fields.password.input.value;
-  let lowercaseClass, uppercaseClass, numberClass, lengthClass;
+const analyzePassword = (pw) => {
+  let hasUppercase, hasLowercase, hasNumber, hasLength;
 
   // is there a lowercase letter
   for (let i = 0, char; i < pw.length; i++) {
     char = pw.charAt(i);
-    if (isLowerCase(char)) lowercaseClass = "checkmark";
-    if (isUpperCase(char)) uppercaseClass = "checkmark";
-    if (char >= "0" && char <= "9") numberClass = "checkmark";
+    if (isLowerCase(char)) hasLowercase = true;
+    if (isUpperCase(char)) hasUppercase = true;
+    if (char >= "0" && char <= "9") hasNumber = true;
   }
   if (pw.length > 7) {
-    lengthClass = "checkmark";
+    hasLength = true;
   }
+
+  return {
+    hasLowercase,
+    hasUppercase,
+    hasNumber,
+    hasLength,
+    isOk: (hasLowercase && hasUppercase && hasNumber && hasLength) ? true : false
+  }
+
+}
+
+const showSubmit = (fields) => {
+  let ret = analyzePassword(fields.password.input.value);
+
+  const {submitting} = fields.password.meta;
+
+  // give false error message while enter email - so remove
+  // and do error checking on submi
+  // const re = /^\S+@\S+$/;
+  // let isEmailValid;
+  // if (re.test(fields.email.input.value)) {
+  //   isEmailValid = true;
+  // }
+
+  let isEmailValid;
+  if (fields.email.input.value && fields.email.input.value.trim() !== '') {
+    isEmailValid = true;
+  }
+
+  let isUsernameEntered
+  if (fields.username.input.value && fields.username.input.value.trim() !== '') {
+    isUsernameEntered = true;
+  }
+
+  // diable submit button if in the middle of a submit - or fields are invalid
+  let isDisabled = !fields.connected || submitting || !ret.isOk || !isEmailValid || !isUsernameEntered;
+
+  return (
+    <div className="Signup-submit-button">
+      <WbxButton disabled={isDisabled} type="submit">Submit</WbxButton>
+    </div>
+
+  );
+}
+
+const passwordHints = (fields) => {
+  const pw = fields.password.input.value;
+
+  let ret = analyzePassword(pw);
+
   return (
     <div>
       <div className="Signup-password-hint">
         <ul>
-          <li className={`${uppercaseClass} plus20`}>One uppercase character</li>
-          <li className={numberClass}>One number</li>
+          <li className={`${ret.hasUppercase ? "checkmark" : ''} plus20`}>One uppercase character</li>
+          <li className={ret.hasNumber ? "checkmark" : ""}>One number</li>
         </ul>
         <ul>
-          <li className={`${lowercaseClass} plus20`}>One lowercase character</li>
-          <li className={lengthClass}>8 characters minimum</li>
+          <li className={`${ret.hasLowercase ? "checkmark" : ""} plus20`}>One lowercase character</li>
+          <li className={ret.hasLength ? "checkmark" : ""}>8 characters minimum</li>
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
 
@@ -50,6 +100,7 @@ class RefSignupForm extends Component {
   constructor(props) {
     super(props);
     this.elRef = [];
+
   }
 
   componentDidMount() {
@@ -66,7 +117,7 @@ class RefSignupForm extends Component {
 
     // position cursor and scroll if needed
     if (this.props.errorNotif && this.elRef) {
-      const field = Object.keys(this.props.errorNotif.errors)[0]
+      const field = Object.keys(this.props.errorNotif.errors)[0];
       const ref = this.elRef[field];
       if (ref) {
         ref.focus();
@@ -77,6 +128,7 @@ class RefSignupForm extends Component {
       this.props.errorNotificationDelete(this.props.errorNotif.form);
     }
   }
+
 
   showSignupScreen() {
     const {handleSubmit, submitting} = this.props;
@@ -96,20 +148,30 @@ class RefSignupForm extends Component {
                    name="password"/>
           </div>
           <Fields names={['password']} component={passwordHints}/>
-
+          <div className="Signup-no-network">
+            {!this.props.auth.connected && "Sorry - there's no network connection.  Sign up cannot proceed at this time."}
+          </div>
 
           <section className="Signup-bottom mdl-color-text--primary">
             <div className="Signup-accept-label">By signing up you agree to the Terms of Service
               and Privacy Policy.
             </div>
-            <div className="Signup-submit-button">
-              <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
-            </div>
+
+            <Fields props={{connected: this.props.auth.connected}}
+                    names={['password', 'username', 'email']}
+                    submitting={submitting} component={showSubmit}/>
           </section>
+
         </form>
       </div>
     )
   }
+
+  /*
+   <div className="Signup-submit-button">
+   <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
+   </div>
+   */
 
   showInfoScreen() {
     const {handleSubmit, submitting} = this.props;
@@ -134,9 +196,8 @@ class RefSignupForm extends Component {
 
 
   render() {
-
     const {auth, submitting} = this.props;
-    const screenNumber = (auth.authenticated) ? 2 : 1;
+    const rocketClass = (auth.authenticated) ? 'Signup-rocket-area Signup-rocket-move' : 'Signup-rocket-area';
 
     // if we're not authenticated then show signup screen
     // else we're up to showing the general info screen
@@ -148,25 +209,19 @@ class RefSignupForm extends Component {
           </div>
           <section className="Signup-left-side">
             <div className="Signup-cloud-parent">
-              <div>
-                <img src={clouds} className="Signup-clouds1" alt="logo"/>
-                {/*</div>*/}
-                {/*<div className="Signup-cloud-parent">*/}
-              </div>
-              <div>
-                <img src={clouds} className="Signup-clouds2" alt="logo"/>
-              </div>
+              <img src={clouds} className="Signup-clouds" alt="logo"/>
+              <img src={clouds} className="Signup-clouds Signup-clouds-2 {
+" alt="logo"/>
             </div>
-            {/*<div className="Signup-grow-area"/>*/}
             <div className="Signup-rocket-parent">
-              <img src={rocket} alt="Welcome to Workbox" className={'Signup-rocket-area' + screenNumber}/>
+              <img src={rocket} alt="Welcome to Workbox" className={rocketClass}/>
             </div>
           </section>
           <section className="Signup-right-side mdl-color-text--primary">
             {(!auth.authenticated) ? this.showSignupScreen() : this.showInfoScreen()}
           </section>
         </div>
-      </div>
+      </div >
     )
   }
 }
