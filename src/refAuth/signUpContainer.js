@@ -1,53 +1,34 @@
 import {reduxForm, SubmissionError} from 'redux-form';
 import {connect} from 'react-redux'
-import RefSignupForm from './refSignupForm';
+import SignUpForm from './signUpForm';
 import {browserHistory} from 'react-router';
-import {errorNotificationInsert, errorNotificationDelete} from '../utils/redux';
-import {signUpUser, authClearError} from './actions';
+import {errorNotificationDelete} from '../utils/redux';
 import authAPI  from '../authAPI';
-const {authServices}  = authAPI;
-
-
-// const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const { authServices }  = authAPI;
+const { authActions } = authAPI;
 
 function asyncValidate(values) {
 
+  // don't bother doing async test if < 4 chars
   if (values.username && values.username.length < 4) {
-    return;
+    return null;
   }
 
+  // asyncValidate gets a promise back
   let p = new Promise((resolve, reject) => {
-    authServices.isUsernameUnique(values.username)
+    authServices.getProfileForUsername(values.username)
       .then(function (value) {
-        console.log("back in signup success", value);
-        resolve; // Success!
-      }, function (err) {
-        console.log("back in signup rejected", err);
-        reject(err);
-      });
+        if (value) {
+          reject({username: "This username is already taken"})
+        } else {
+          resolve(null);
+        }
+      })
   });
 
   return p;
 }
-//   return new Promise((resolve, reject) => {
-//     if (values.username && values.username.length > 3) {
-//       var q = firebaseDatabase.ref('users').orderByChild('username').equalTo(values.username);
-//       q.once('value')
-//        .then(function (snapshot) {
-//         if (snapshot.val()) {
-//           reject({username: 'That username is taken'});
-//         } else {
-//           resolve(console.log("all ok"));  // fulfilled successfully
-//         }
-//       }, function (err) {
-//         reject({username: `${err.code}.  Please try again later `});
-//       });
-//     }
-//   }).catch(function (err) {
-//       return Promise.reject(err);
-//     }
-//   );
-// }
+
 // synchronous validation on keystroke
 function validate(values) {
   let errors = {};
@@ -71,8 +52,6 @@ function validate(values) {
 // update the database
 const validateAndUpdateSignup = (values, dispatch) => {
 
-  // return sleep(1000) // simulate server latency
-  //   .then(() => {
   let errors = [];
 
   if (!values.username || values.username.trim() === '') {
@@ -102,7 +81,19 @@ const validateAndUpdateSignup = (values, dispatch) => {
     throw new SubmissionError(errors);
   }
 
-  dispatch(signUpUser(values));
+  authActions.signUpUser(values)(dispatch);
+
+  // authServices.createUserWithEmailAndPassword(values.username)
+  //   .then(function (value) {
+  //     authServices.createUserProfile(values.email, values.username);
+  //   }, function (err) {
+  //     throw new SubmissionError(err);
+  //   }
+  //   ).catch(function (err) {
+  //     throw new SubmissionError(err);
+  //   }
+  // )
+
 }
 
 // updates some additional optional info
@@ -127,14 +118,19 @@ function mapStateToProps(state) {
   };
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    errorNotificationDelete,
+    authClearError: authActions.authClearError
+  }
+}
+
 let form = reduxForm({
   form: 'signupForm', // a unique identifier for this form
   validate,
   asyncValidate,
   asyncBlurFields: ['username']
-  // onSubmitFail: (errors, dispatch) => {
-  //   dispatch(errorNotificationInsert(formName, errors))
-  // }
-})(RefSignupForm);
+})(SignUpForm);
 
-export default connect(mapStateToProps, {errorNotificationDelete, authClearError})(form)
+
+export default connect(mapStateToProps, mapDispatchToProps)(form)

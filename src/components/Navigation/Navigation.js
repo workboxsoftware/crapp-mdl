@@ -1,23 +1,28 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
-import * as Actions from '../../authAPI/actions';
+import { bindActionCreators } from 'redux';
 import './style.css';
+import authAPI from '../../authAPI';
+const { authServices }  = authAPI;
+const { authActions } = authAPI;
 
 class Navigation extends React.Component {
 
   handleSignout() {
-    this.props.signOutUser();
+    // this.props.services.signOut();
+    authServices.signOut();
   }
 
   renderAuthLinks() {
+
     if (this.props.auth.authenticated) {
       return (
         <a className="mdl-navigation__link" href="#" onClick={() => this.handleSignout()}>Sign Out</a>
       )
     } else {
       return [
-        <Link key="1" className="mdl-navigation__link" to="/loginx">Login</Link>,
+        <Link key="1" className="mdl-navigation__link" to="/refSignIn">Log In</Link>,
         <Link key="2" className="mdl-navigation__link" to="/refSignup">Sign Up</Link>
       ]
     }
@@ -59,5 +64,12 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, Actions)(Navigation);
+function mapDispatchToProps(dispatch) {
+  return({
+     services: bindActionCreators(authServices, dispatch)
+  })
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
 

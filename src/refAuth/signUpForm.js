@@ -10,7 +10,6 @@ import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import Firebase from "firebase";
 
 const isLowerCase = char => char.toLowerCase() && char !== char.toUpperCase();
 const isUpperCase = char => char.toUpperCase() && char !== char.toLowerCase();
@@ -44,14 +43,6 @@ const showSubmit = (fields) => {
 
   const {submitting} = fields.password.meta;
 
-  // give false error message while enter email - so remove
-  // and do error checking on submi
-  // const re = /^\S+@\S+$/;
-  // let isEmailValid;
-  // if (re.test(fields.email.input.value)) {
-  //   isEmailValid = true;
-  // }
-
   let isEmailValid;
   if (fields.email.input.value && fields.email.input.value.trim() !== '') {
     isEmailValid = true;
@@ -66,7 +57,7 @@ const showSubmit = (fields) => {
   let isDisabled = !fields.connected || submitting || !ret.isOk || !isEmailValid || !isUsernameEntered;
 
   return (
-    <div className="Signup-submit-button">
+    <div className="Sign-up-submit-button">
       <WbxButton disabled={isDisabled} type="submit">Submit</WbxButton>
     </div>
 
@@ -80,7 +71,7 @@ const passwordHints = (fields) => {
 
   return (
     <div>
-      <div className="Signup-password-hint">
+      <div className="Sign-up-password-hint">
         <ul>
           <li className={`${ret.hasUppercase ? "checkmark" : ''} plus20`}>One uppercase character</li>
           <li className={ret.hasNumber ? "checkmark" : ""}>One number</li>
@@ -95,7 +86,7 @@ const passwordHints = (fields) => {
 }
 
 
-class RefSignupForm extends Component {
+class SignUpForm extends Component {
 
   constructor(props) {
     super(props);
@@ -129,6 +120,11 @@ class RefSignupForm extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.auth.authenticated) {
+      browserHistory.push('about');
+    }
+  }
 
   showSignupScreen() {
     const {handleSubmit, submitting} = this.props;
@@ -139,7 +135,7 @@ class RefSignupForm extends Component {
           <h3>
             <FmtMsg className="mdl-color-text--primary">signup:Sign up</FmtMsg>
           </h3>
-          <div className="Signup-input-area">
+          <div className="Sign-up-input-area">
             <Field component={WbxTextfield} elRef={this.elRef} type="email" label="Your email address"
                    name="email"/>
             <Field component={WbxTextfield} elRef={this.elRef} type="text" label="Choose a username"
@@ -148,12 +144,12 @@ class RefSignupForm extends Component {
                    name="password"/>
           </div>
           <Fields names={['password']} component={passwordHints}/>
-          <div className="Signup-no-network">
+          <div className="Sign-up-no-network">
             {!this.props.auth.connected && "Sorry - there's no network connection.  Sign up cannot proceed at this time."}
           </div>
 
-          <section className="Signup-bottom mdl-color-text--primary">
-            <div className="Signup-accept-label">By signing up you agree to the Terms of Service
+          <section className="Sign-up-bottom mdl-color-text--primary">
+            <div className="Sign-up-accept-label">By signing up you agree to the Terms of Service
               and Privacy Policy.
             </div>
 
@@ -168,7 +164,7 @@ class RefSignupForm extends Component {
   }
 
   /*
-   <div className="Signup-submit-button">
+   <div className="Sign-up-submit-button">
    <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
    </div>
    */
@@ -181,12 +177,12 @@ class RefSignupForm extends Component {
         <h3>
           <FmtMsg className="mdl-color-text--primary">signup.more:Almost there...</FmtMsg>
         </h3>
-        <div className="Signup-input-area">
+        <div className="Sign-up-input-area">
           <Field component={WbxTextfield} type="text" label="Your first name" name="firstName"/>
           <Field component={WbxTextfield} type="text" label="Your last name" name="lastName"/>
           <Field component={WbxTextfield} type="text" lablel="Your Company Name" name="companyName"/>
         </div>
-        <p className="Signup-align-right">
+        <p className="Sign-up-align-right">
           <WbxButton disabled={submitting} type="submit">Done</WbxButton>
         </p>
       </form>
@@ -197,27 +193,27 @@ class RefSignupForm extends Component {
 
   render() {
     const {auth, submitting} = this.props;
-    const rocketClass = (auth.authenticated) ? 'Signup-rocket-area Signup-rocket-move' : 'Signup-rocket-area';
+    const rocketClass = (auth.authenticated) ? 'Sign-up-rocket-area Sign-up-rocket-move' : 'Sign-up-rocket-area';
 
     // if we're not authenticated then show signup screen
     // else we're up to showing the general info screen
     return (
       <div>
-        <div className="Signup-container">
-          <div className="Signup-loading">
+        <div className="Sign-up-container">
+          <div className="Sign-up-loading">
             {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
           </div>
-          <section className="Signup-left-side">
-            <div className="Signup-cloud-parent">
-              <img src={clouds} className="Signup-clouds" alt="logo"/>
-              <img src={clouds} className="Signup-clouds Signup-clouds-2 {
+          <section className="Sign-up-left-side">
+            <div className="Sign-up-cloud-parent">
+              <img src={clouds} className="Sign-up-clouds" alt="logo"/>
+              <img src={clouds} className="Sign-up-clouds Sign-up-clouds-2 {
 " alt="logo"/>
             </div>
-            <div className="Signup-rocket-parent">
+            <div className="Sign-up-rocket-parent">
               <img src={rocket} alt="Welcome to Workbox" className={rocketClass}/>
             </div>
           </section>
-          <section className="Signup-right-side mdl-color-text--primary">
+          <section className="Sign-up-right-side mdl-color-text--primary">
             {(!auth.authenticated) ? this.showSignupScreen() : this.showInfoScreen()}
           </section>
         </div>
@@ -226,7 +222,7 @@ class RefSignupForm extends Component {
   }
 }
 
-export default injectIntl(RefSignupForm);
+export default injectIntl(SignUpForm);
 
 
 //ref={(input) => { this.usernameRef = input; }}

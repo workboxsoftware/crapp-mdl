@@ -1,7 +1,4 @@
-import {
-  AUTH_USER, SIGN_OUT_USER, AUTH_ERROR,
-  SET_CONNECTED_STATUS, AUTH_CLEAR_ERROR
-} from './actions';
+import * as t from './actionTypes';
 
 const initialState = {
   authenticated: false,
@@ -9,28 +6,29 @@ const initialState = {
 };
 
 export default function auth(state = initialState, action) {
+
   switch (action.type) {
-    case AUTH_USER:
+    case t.AUTH_USER:
       return {
         ...state,
         authenticated: true,
         error: null
       };
-    case SIGN_OUT_USER:
+    case t.SIGN_OUT_USER:
       return {
         ...state,
         authenticated: false,
         error: null
       };
-    case AUTH_ERROR:
+    case t.AUTH_ERROR:
       return {
         ...state,
-        error: action.payload.message
+        error: action.payload
       };
-    case AUTH_CLEAR_ERROR:
+    case t.AUTH_CLEAR_ERROR:
       const newState = {...state, error: ''};
       return newState;
-    case SET_CONNECTED_STATUS:
+    case t.SET_CONNECTED_STATUS:
       return {
         ...state,
         connected: action.status

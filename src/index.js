@@ -4,8 +4,6 @@ import Routes from './config/routes';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import reduxThunk from 'redux-thunk';
-import * as Actions from './refAuth/actions';
-import firebase from 'firebase';
 
 
 import {addLocaleData} from 'react-intl';
@@ -14,10 +12,11 @@ import {addLocaleData} from 'react-intl';
 import applicationReducer from './application/applicationReducer';
 import {combineReducers} from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form'
-import authReducer from './refAuth/reducer';
+import authReducer from './authAPI/reducer';
 import notifReducer from './utils/redux';
 import authAPI  from './authAPI';
-const  { authServices }  = authAPI;
+const  { authServices, authActions }  = authAPI;
+
 import en from 'react-intl/lib/locale-data/en'
 import fr from 'react-intl/lib/locale-data/fr'
 import de from 'react-intl/lib/locale-data/de'
@@ -51,20 +50,6 @@ if (!language) {
   language = 'en';
 }
 
-// Initialize Firebase
-// const config = {
-//   apiKey: 'AIzaSyAIE_-SJY-q9hJxokq61bORcqubyMOUfV8',
-//   authDomain: 'workbox-dev.firebaseapp.com',
-//   databaseURL: 'https://workbox-dev.firebaseio.com',
-//   storageBucket: 'workbox-dev.appspot.com'
-// };
-//
-// firebase.initializeApp(config);
-//
-// export const firebaseAuth = firebase.auth();
-// export const firebaseDatabase = firebase.database();
-
-
 // set initial state of store.  check to see if user has already set
 // a specific locale. If not, use best possible default from above.
 const initialState = {
@@ -76,7 +61,6 @@ const initialState = {
     },
   },
   auth: {
-    authenticated: false,
     error: null,
     connected: true
 
@@ -85,20 +69,19 @@ const initialState = {
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 export const store = createStoreWithMiddleware(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const dispatch=store.dispatch;
 
-authServices.initializeAuth(store.dispatch);
+// establish connection to firebase
+authServices.initializeAuth();
 
-// store.dispatch(Actions.verifyAuth());
-//
-//
-// var connectedRef = firebase.database().ref(".info/connected");
-// connectedRef.on("value", function (snap) {
-//   if (snap.val() === true) {
-//     store.dispatch(Actions.setConnectedtatus(true));
-//   } else {
-//     store.dispatch(Actions.setConnectedtatus(false));
-//   }
-// });
+
+console.log("is auth'd", authServices.isAuthenticated());
+
+// notify redux on login authorization and signout
+authServices.handleAuthStatusChanged(authActions.authUser, authActions.unAuthUser)(dispatch);
+
+// notify redux when connection lost (and regained)
+authServices.handleConnectionStatusChanged(authActions.setConnectedStatus)(dispatch);
 
 
 // TODO:  We need to actually validate the token and see if it's active.  But what to show while validating?

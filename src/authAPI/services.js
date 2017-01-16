@@ -1,56 +1,42 @@
-import * as Actions from './actions';
 import firebase from 'firebase';
-import {browserHistory} from 'react-router';
 
 let fbAuth;
 let fbDb;
-
-export const signUpUser = (credentials) => {
-
-}
+const usersDir = 'users';
 
 export const signOut = () => {
   fbAuth.signOut();
 }
 
-export const isUsernameUnique = (username) => {
+export const getProfileForUsername = (username) => {
 
   let p = new Promise((resolve, reject) => {
-    var q = fbDb.ref('users').orderByChild('username').equalTo(username);
+    const myUsername = username.toLowerCase().trim();
+    const q = fbDb.ref(usersDir).orderByChild('username').equalTo(myUsername);
     q.once('value')
       .then(function (snapshot) {
-        if (snapshot.val()) {
-          reject({username: 'That username is taken'});
+        let profile;
+        if (! snapshot.exists) {
+          resolve(null);
         } else {
-          resolve(console.log("username is unique"));  // fulfilled successfully
+          let ct = 0;
+          snapshot.forEach(function(childSnapshot) {
+            ct++
+            profile = childSnapshot.val();
+          });
+          if (ct > 1) {
+            console.err(`found more than 1 profile for username ${username}`);
+            reject()
+          }
         }
-      }, function (err) {
-        reject({username: `${err.code}.  Please try again later `});
+        resolve(profile);
       })
   })
 
   return p;
 }
-// export const isUsernameUnique = (username) => {
-//   return new Promise((resolve, reject) => {
-//     var q = fbdb.ref('users').orderByChild('username').equalTo(values.username);
-//     q.once('value')
-//       .then(function (snapshot) {
-//         if (snapshot.val()) {
-//           reject({username: 'That username is taken'});
-//         } else {
-//           resolve(console.log("username is unique"));  // fulfilled successfully
-//         }
-//       }, function (err) {
-//         reject({username: `${err.code}.  Please try again later `});
-//       }).catch(function (err) {
-//       return Promise.reject(err);
-//     }
-//   );
-// });
 
-
-export const initializeAuth = dispatch => {
+export const initializeAuth = () => {
 
   const config = {
     apiKey: 'AIzaSyAIE_-SJY-q9hJxokq61bORcqubyMOUfV8',
@@ -63,26 +49,72 @@ export const initializeAuth = dispatch => {
 
   fbAuth = firebase.auth();
   fbDb = firebase.database();
+}
 
-  // dispatch(Actions.verifyAuth());
+export function isAuthenticated () {
+  return fbAuth.currentUser;
+}
+export function signInUserWithEmailAndPassword(email, password) {
+  return fbAuth.signInWithEmailAndPassword(email, password)
+    .then
+    (response => {
+        return Promise.resolve(response)
+      },
+      error => {
+        return Promise.reject(error)
+      })
+}
 
-  fbAuth.onAuthStateChanged(user => {
-    if (user) {
-      dispatch(Actions.authUser());
-    } else {
-      dispatch(Actions.signOutUser());
-    }
+export function createUserWithEmailAndPassword(credentials) {
+  const p = new Promise(function (resolve, reject) {
+    fbAuth.createUserWithEmailAndPassword(credentials.email, credentials.password)
+      .then(response => {
+          console.log("created new user");
+          resolve(response)
+        },
+        error => {
+          console.log("create user failed");
+          reject(error)
+        })
+      .catch(err => {
+        console.log("error thrown ", err)
+        throw err
+      });
+  })
+  return p;
+}
+
+export function createUserProfile(username, email) {
+  const myUsername = username.toLowerCase().trim();
+  return fbDb.ref(usersDir + '/' + fbAuth.currentUser.uid).set({
+    username: myUsername,
+    email,
+    createDate: new Date().toString()
   });
-
-  const connectedRef = firebase.database().ref(".info/connected");
-  connectedRef.on("value", function (snap) {
-    if (snap.val() === true) {
-      dispatch(Actions.setConnectedtatus(true));
-    } else {
-      dispatch(Actions.setConnectedtatus(false));
-    }
-  });
-
 }
 
 
+export function handleConnectionStatusChanged(connectionAction) {
+  return function (dispatch) {
+    var connectedRef = fbDb.ref(".info/connected");
+    connectedRef.on("value", function (snap) {
+      if (snap.val() === true) {
+        dispatch(connectionAction(true));
+      } else {
+        dispatch(connectionAction(false));
+      }
+    });
+  }
+}
+
+export function handleAuthStatusChanged(authAction, unAuthAction) {
+  return function (dispatch) {
+    fbAuth.onAuthStateChanged(user => {
+      if (user) {
+        dispatch(authAction());
+      } else {
+        dispatch(unAuthAction());
+      }
+    });
+  }
+}
