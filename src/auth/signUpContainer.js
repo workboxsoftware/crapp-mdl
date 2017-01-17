@@ -2,7 +2,7 @@ import {reduxForm, SubmissionError} from 'redux-form';
 import {connect} from 'react-redux'
 import SignUpForm from './signUpForm';
 import {browserHistory} from 'react-router';
-import {errorNotificationDelete} from '../utils/redux';
+import {errorNotificationInsert,errorNotificationDelete} from '../utils/redux';
 import authAPI  from '../authAPI';
 const { authServices }  = authAPI;
 const { authActions } = authAPI;
@@ -11,9 +11,14 @@ function asyncValidate(values) {
 
   // don't bother doing async test if < 4 chars
   if (values.username && values.username.length < 4) {
-    return null;
+    return Promise.resolve(null);
   }
 
+  // this means we're already on the 2nd screen
+  // so don't check if username is unique
+  if (authServices.isAuthenticated()) {
+    return Promise.resolve(null);
+  }
   // asyncValidate gets a promise back
   let p = new Promise((resolve, reject) => {
     authServices.getProfileForUsername(values.username)
@@ -54,32 +59,32 @@ const validateAndUpdateSignup = (values, dispatch) => {
 
   let errors = [];
 
-  if (!values.username || values.username.trim().length == 0) {
-    errors.push({username: "no-username: Username required"});
+  if (!values.username || values.username.trim().length === 0) {
+    errors.push({username: "err/username-req: Username required"});
   }
 
-  if (!values.username || values.username.trim().length < 3) {
-    errors.push({username: "Username must be at least 3 characters"});
+  if (!values.username || values.username.trim().length < 4) {
+    errors.push({username: "err/username-3: Username must be at least 4 characters"});
   }
 
   if (!values.email || values.email.trim() === '') {
-    errors.push({email: "no-email: Email required"});
+    errors.push({email: "err/email-req: Email required"});
   } else {
     const re = /^\S+@\S+$/;
     if (!re.test(values.email)) {
-      errors.push({email: "invalid-email: Invalid Email"});
+      errors.push({email: "err/invalid-email: Invalid Email"});
     }
   }
 
   if (!values.password || values.password.trim() === '') {
-    errors.push({password: "no-password: Password required"});
+    errors.push({password: "err/password-req: Password required"});
   } else if (values.password.length < 8) {
-    errors.push({password: "password-8: Password must be at least 8 characters"});
+    errors.push({password: "err/password-8: Password must be at least 8 characters"});
   }
 
   if (errors.length > 0) {
     return new Promise(function (resolve, reject) {
-      throw new SubmissionError(errors[0]);
+      throw new SubmissionError(...errors);
     });
   }
 
@@ -94,7 +99,7 @@ const validateAndUpdateInfo = (values, dispatch) => {
 
 };
 
-const formName = 'signupForm';
+const formName = 'SignUpForm';
 
 function mapStateToProps(state) {
   let items = state.notif.filter(err => err.form === formName);
@@ -116,10 +121,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 let form = reduxForm({
-  form: 'signupForm', // a unique identifier for this form
+  form: formName, // a unique identifier for this form
   validate,
   asyncValidate,
-  asyncBlurFields: ['username']
+  asyncBlurFields: ['username'],
+  onSubmitFail:(errors, dispatch) => {
+    dispatch(errorNotificationInsert(formName, errors))
+  }
 })(SignUpForm);
 
 

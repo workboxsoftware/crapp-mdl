@@ -18,5 +18,5 @@ export default {
   "password": "Mot de passe",
   "username": "Nom d'utilisateur",
   "signup.more": "presque là",
-   "signup": "m'inscrire"
+  "signup": "m'inscrire"
 }

@@ -1,21 +1,21 @@
 import {connect} from 'react-redux'
 import {reduxForm, SubmissionError} from 'redux-form';
 import LogInForm from './logInForm';
-import {errorNotificationDelete} from '../utils/redux';
+import {errorNotificationInsert, errorNotificationDelete} from '../utils/redux';
 import authAPI  from '../authAPI';
-const { authActions } = authAPI;
+const {authActions} = authAPI;
 
 const validateAndUpdateLogIn = (values, dispatch) => {
   let errors = [];
 
   if (!values.usernameEmail || values.usernameEmail.trim() === '') {
-    errors.push({email: "no-email: Email required"});
+    errors.push({email: "err/email-req: Email required"});
   }
 
   if (!values.password || values.password.trim() === '') {
-    errors.push({password: "no-password: Password required"});
+    errors.push({password: "err/password-req: Password required"});
   } else if (values.password.length < 8) {
-    errors.push({password: "password-8: Password must be at least 8 characters"});
+    errors.push({password: "err/password-8: Password must be at least 8 characters"});
   }
 
   if (errors.length > 0) {
@@ -50,7 +50,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 let form = reduxForm({
-  form: 'logInForm', // a unique identifier for this form
+  form: formName, // a unique identifier for this form
+  onSubmitFail:(errors, dispatch) => {
+    dispatch(errorNotificationInsert(formName, errors))
+  }
 })(LogInForm);
 
 

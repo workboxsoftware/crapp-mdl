@@ -4,13 +4,11 @@ import WbxButton from '../wbxWrappers/wbxButton';
 import WbxTextfield from '../wbxWrappers/wbxTextfield';
 import {injectIntl} from 'react-intl';
 import FmtMsg from '../widgets/fmtMsg';
-import rocket from '../images/rocket.svg';
 import './style.css'
-import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import {browserHistory} from 'react-router';
+// import {browserHistory} from 'react-router';
 import RocketArea from './rocketArea';
 
 const isLowerCase = char => char.toLowerCase() && char !== char.toUpperCase();
@@ -59,7 +57,7 @@ const showSubmit = (fields) => {
   let isDisabled = !fields.connected || submitting || !ret.isOk || !isEmailValid || !isUsernameEntered;
 
   return (
-    <div className="Sign-up-submit-button">
+    <div className="Auth-submit-button">
       <WbxButton disabled={isDisabled} type="submit">Submit</WbxButton>
     </div>
 
@@ -73,7 +71,7 @@ const passwordHints = (fields) => {
 
   return (
     <div>
-      <div className="Sign-up-password-hint">
+      <div className="Auth-password-hint">
         <ul>
           <li className={`${ret.hasUppercase ? "checkmark" : ''} plus20`}>One uppercase character</li>
           <li className={ret.hasNumber ? "checkmark" : ""}>One number</li>
@@ -103,6 +101,7 @@ class SignUpForm extends Component {
 
   componentDidUpdate() {
     // Show alert box if needed
+
     if (this.props.auth.error) {
       ModalManager.open(<Alert content={this.props.auth.error} title="Authorization Error"/>);
       this.props.dispatch(this.props.authClearError());
@@ -130,14 +129,14 @@ class SignUpForm extends Component {
 
   showSignupScreen() {
     const {handleSubmit, submitting} = this.props;
-
+    this.elRef = [];
     return (
-      <div className="Signup">
+      <div className="Auth">
         <form onSubmit={handleSubmit(this.props.validateAndUpdateSignup.bind(this))}>
           <h3>
             <FmtMsg className="mdl-color-text--primary">signup:Sign Up</FmtMsg>
           </h3>
-          <div className="Sign-up-input-area">
+          <div className="Auth-input-area">
             <Field component={WbxTextfield} elRef={this.elRef} type="email" label="Your email address"
                    name="email"/>
             <Field component={WbxTextfield} elRef={this.elRef} type="text" label="Choose a username"
@@ -146,12 +145,12 @@ class SignUpForm extends Component {
                    name="password"/>
           </div>
           <Fields names={['password']} component={passwordHints}/>
-          <div className="Sign-up-no-network">
+          <div className="Auth-no-network">
             {!this.props.auth.connected && "Sorry - there's no network connection.  Sign up cannot proceed at this time."}
           </div>
 
-          <section className="Sign-up-bottom mdl-color-text--primary">
-            <div className="Sign-up-accept-label">By signing up you agree to the Terms of Service
+          <section className="Auth-bottom mdl-color-text--primary">
+            <div className="Auth-accept-label">By signing up you agree to the Terms of Service
               and Privacy Policy.
             </div>
 
@@ -159,32 +158,25 @@ class SignUpForm extends Component {
                     names={['password', 'username', 'email']}
                     submitting={submitting} component={showSubmit}/>
           </section>
-
         </form>
       </div>
     )
   }
 
-  /*
-   <div className="Sign-up-submit-button">
-   <WbxButton disabled={submitting} type="submit">Submit</WbxButton>
-   </div>
-   */
-
   showInfoScreen() {
     const {handleSubmit, submitting} = this.props;
-
+    this.elRef = [];
     return (
       <form onSubmit={handleSubmit(this.props.validateAndUpdateInfo.bind(this))}>
         <h3>
           <FmtMsg className="mdl-color-text--primary">signup.more:Almost there...</FmtMsg>
         </h3>
-        <div className="Sign-up-input-area">
+        <div className="Auth-input-area">
           <Field component={WbxTextfield} type="text" label="Your first name" name="firstName"/>
           <Field component={WbxTextfield} type="text" label="Your last name" name="lastName"/>
           <Field component={WbxTextfield} type="text" lablel="Your Company Name" name="companyName"/>
         </div>
-        <p className="Sign-up-align-right">
+        <p className="Auth-align-right">
           <WbxButton disabled={submitting} type="submit">Done</WbxButton>
         </p>
       </form>
@@ -192,21 +184,18 @@ class SignUpForm extends Component {
     );
   }
 
-
   render() {
     const {auth, submitting} = this.props;
-    const rocketClass = (auth.authenticated) ? 'Sign-up-rocket-area Sign-up-rocket-move' : 'Sign-up-rocket-area';
-
     // if we're not authenticated then show signup screen
     // else we're up to showing the general info screen
     return (
       <div>
-        <div className="Sign-up-container">
-          <div className="Sign-up-loading">
+        <div className="Auth-container">
+          <div className="Auth-loading">
             {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
           </div>
           <RocketArea props={this.props}/>
-          <section className="Sign-up-right-side mdl-color-text--primary">
+          <section className="Auth-right-side mdl-color-text--primary">
             {(!auth.authenticated) ? this.showSignupScreen() : this.showInfoScreen()}
           </section>
         </div>
@@ -217,7 +206,5 @@ class SignUpForm extends Component {
 
 export default injectIntl(SignUpForm);
 
-
-//ref={(input) => { this.usernameRef = input; }}
 
 

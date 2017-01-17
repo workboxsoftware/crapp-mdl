@@ -98,7 +98,6 @@ class LogInForm extends Component {
                 <Fields props={{auth: this.props.auth}}
                         names={['password', 'usernameEmail']}
                         submitting={submitting} component={showSubmit}/>
-
               </form>
             </section>
           </div>

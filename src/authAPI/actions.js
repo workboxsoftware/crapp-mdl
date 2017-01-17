@@ -3,7 +3,6 @@ import {browserHistory} from 'react-router';
 import * as authServices  from './services';
 
 export function setConnectedStatus(status) {
-  console.log("connection status ", status)
   return {
     type: t.SET_CONNECTED_STATUS,
     status

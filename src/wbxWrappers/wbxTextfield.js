@@ -22,7 +22,6 @@ import deCamelCase  from '../utils/deCamelCase';
 function ErrorHandler({ input, label, type, intl: { formatMessage }, meta: { submitting, touched, error } }) {
 
   if ((touched || submitting) && error) {
-    // debugger;
     const tr = new translateText(formatMessage);
     const translatedText = tr.text(error);
     return  <span className="wbx-textfield__error">{translatedText}</span>
@@ -53,11 +52,6 @@ class WbxTextfield extends Component {
     const name = this.props.input.name;
 
     const elRef = this.props.elRef;
-
-    if (error) {
-      // debugger;
-      console.log("got error", error);
-    }
   
     // Here are the steps involed in getting the label.  
     // NOTE --> label is the what redux-form calls the prompt.
@@ -80,10 +74,6 @@ class WbxTextfield extends Component {
       // right away.  This is the best regex that I
       // could find: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    if (type === "password") {
-      // debugger;
-      console.log(error);
-    }
 
     let pattern = '';
     let myType = type;
