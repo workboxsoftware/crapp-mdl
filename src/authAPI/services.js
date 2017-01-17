@@ -2,7 +2,7 @@ import firebase from 'firebase';
 
 let fbAuth;
 let fbDb;
-const usersDir = 'users';
+const usersDir = 'wbx_users';
 
 export const signOut = () => {
   fbAuth.signOut();
@@ -10,6 +10,7 @@ export const signOut = () => {
 
 export const getProfileForUsername = (username) => {
 
+  //TODO: if more than 1 username found, post to some cloud-based logging/crash system
   let p = new Promise((resolve, reject) => {
     const myUsername = username.toLowerCase().trim();
     const q = fbDb.ref(usersDir).orderByChild('username').equalTo(myUsername);
@@ -36,14 +37,14 @@ export const getProfileForUsername = (username) => {
   return p;
 }
 
-export const initializeAuth = () => {
+export const initializeAuth = (config) => {
 
-  const config = {
-    apiKey: 'AIzaSyAIE_-SJY-q9hJxokq61bORcqubyMOUfV8',
-    authDomain: 'workbox-dev.firebaseapp.com',
-    databaseURL: 'https://workbox-dev.firebaseio.com',
-    storageBucket: 'workbox-dev.appspot.com'
-  };
+  // const config = {
+  //   apiKey: 'AIzaSyAIE_-SJY-q9hJxokq61bORcqubyMOUfV8',
+  //   authDomain: 'workbox-dev.firebaseapp.com',
+  //   databaseURL: 'https://workbox-dev.firebaseio.com',
+  //   storageBucket: 'workbox-dev.appspot.com'
+  // };
 
   firebase.initializeApp(config);
 
@@ -54,10 +55,10 @@ export const initializeAuth = () => {
 export function isAuthenticated () {
   return fbAuth.currentUser;
 }
-export function signInUserWithEmailAndPassword(email, password) {
+export function logInUserWithEmailAndPassword(email, password) {
   return fbAuth.signInWithEmailAndPassword(email, password)
-    .then
-    (response => {
+    .then(
+      response => {
         return Promise.resolve(response)
       },
       error => {

@@ -172,13 +172,13 @@
 
 
 
-.SignIn-error {
+.Log-in-error {
   color:red;
   max-width: 300px;
 }
 
 
-.SignIn-container {
+.Log-in-container {
   display: flex;
   height: calc(100vh - 100px);
   flex-direction: row;
@@ -187,7 +187,7 @@
 }
 
 
-.SignIn-body {
+.Log-in-body {
   display: flex;
   flex-grow: 7;
   flex-direction: column;
@@ -195,41 +195,212 @@
   justify-content: center;
 }
 
-.SignIn-grow-area {
+.Log-in-grow-area {
   flex-grow: 1;
 }
 
-.SignIn-input-area {
+.Log-in-input-area {
   color: #333333;
 }
 
-.SignIn-align-right {
+.Log-in-align-right {
   flex-shrink: 0;
   text-align: right;
   margin-top: 25px;
 }
 
-.SignIn-loading {
+.Log-in-loading {
   position: fixed;
   left: 50%;
   right: 50%;
   top: 90px;
 }
 
-.SignIn-bottom {
+.Log-in-bottom {
   display: flex;
   margin-top: 35px;
   justify-content: space-between;
 }
 
-.SignIn-no-network {
+.Log-in-no-network {
   max-width: 300px;
   color: rgb(213,0,0);
   margin-top: 10px;
 }
 
-.SignIn-align-right {
+.Log-in-align-right {
   flex-shrink: 0;
   text-align: right;
   margin-top: 25px;
+}
+
+
+.Auth-container {
+  display: flex;
+  height: calc(100vh - 55px);
+  flex-direction: row;
+}
+
+.Auth-password-hint {
+  font-size: 5.5pt !important;
+  display:flex;
+  flex-direction:column;
+}
+
+.Auth-password-hint ul {
+  list-style: none;
+  margin: 0 0 -7px 0;
+  padding: 0;
+  display: flex;
+}
+
+.Auth-password-hint li {
+
+  font-size: 9pt;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.Signup li.checkmark:before
+{
+  content: '\2713';
+  margin: 0 .6em 0 0;
+  color: green;
+}
+
+.Auth li.checkmark {
+  color: lightgray;
+  margin: 0;
+}
+
+.Auth li:before
+{
+  content: '\2718';
+  margin: 0 .6em 0 0;
+  color: rgb(192,192,192);
+  float: left;
+}
+
+.Auth-good {
+  color:green;
+}
+
+.Auth-password-hint li.plus20 {
+  margin-right: 17px;
+}
+
+.Auth-error {
+  color:red;
+  max-width: 300px;
+}
+
+.Auth-left-side {
+  flex: 1 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  max-width: 140px;
+  background-color: rgba(255,64,129,.2);
+  overflow: hidden;
+}
+
+
+.Auth-right-side {
+  display: flex;
+  flex-grow: 7;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Auth-grow-area {
+  flex-grow: 1;
+}
+
+.Auth-input-area {
+  color: #333333;
+}
+
+.Auth-align-right {
+  flex-shrink: 0;
+  text-align: right;
+  margin-top: 25px;
+}
+
+.Auth-loading {
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  top: 90px;
+}
+
+.Auth-bottom {
+  display: flex;
+  margin-top: 35px;
+  justify-content: space-between;
+}
+
+.Auth-accept-label {
+  font-size: 11px;
+  color: rgb(192,192,192);
+  max-width: 180px;
+}
+
+.Auth-no-network {
+  max-width: 300px;
+  color: rgb(213,0,0);
+  margin-top: 10px;
+}
+
+.Auth-cloud-parent {
+  flex: 3 2 30%;
+  align-self: flex-start;
+  width: 100%;
+
+}
+
+.Auth-clouds {
+  position :relative;
+  width: 35px;
+  margin-top: 30px;
+  vertical-align: top;
+  left: 150px;
+  animation: Auth-clouds-anim 40s infinite linear;
+}
+
+.Auth-clouds-2 {
+  margin-top:80px;
+  vertical-align: top;
+  animation-delay: 30s;
+}
+
+@keyframes Auth-clouds-anim {
+  0%   {left: -100px;}
+  100% {left: 90%}
+}
+
+.Auth-rocket-parent {
+  flex: 7 1 70%;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  width: 100%;
+}
+
+.Auth-rocket-area {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  max-width: 90%;
+  max-height: 90%;
+  align-self: flex-end;
+}
+
+.Auth-rocket-move {
+  margin-bottom: 40vh;
+  transition: all 3.5s ease;
+
 }

@@ -1,4 +1,4 @@
-import { SWITCH_LOCALE } from './applicationActionTypes'
+import { SWITCH_LOCALE } from './actionTypes'
 
 export default function application(state = {}, action = {}) {
 

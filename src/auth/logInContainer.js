@@ -1,12 +1,11 @@
-import {reduxForm, SubmissionError} from 'redux-form';
 import {connect} from 'react-redux'
-import RefSignInForm from './refSignInForm';
-import {browserHistory} from 'react-router';
+import {reduxForm, SubmissionError} from 'redux-form';
+import LogInForm from './logInForm';
 import {errorNotificationDelete} from '../utils/redux';
 import authAPI  from '../authAPI';
 const { authActions } = authAPI;
 
-const validateAndUpdateSignIn = (values, dispatch) => {
+const validateAndUpdateLogIn = (values, dispatch) => {
   let errors = [];
 
   if (!values.usernameEmail || values.usernameEmail.trim() === '') {
@@ -20,15 +19,17 @@ const validateAndUpdateSignIn = (values, dispatch) => {
   }
 
   if (errors.length > 0) {
-    throw new SubmissionError(errors);
+    return new Promise(function (resolve, reject) {
+      throw new SubmissionError(errors[0]);
+    });
   }
 
-  authActions.signInUser(values)(dispatch);
+  authActions.logInUser(values)(dispatch);
 
 }
 
 
-const formName = 'signInForm';
+const formName = 'logInForm';
 
 function mapStateToProps(state) {
   let items = state.notif.filter(err => err.form === formName);
@@ -37,7 +38,7 @@ function mapStateToProps(state) {
     auth: state.auth,
     application: state.application,
     errorNotif,
-    validateAndUpdateSignIn
+    validateAndUpdateLogIn
   };
 }
 
@@ -49,8 +50,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 let form = reduxForm({
-  form: 'signInForm', // a unique identifier for this form
-})(RefSignInForm);
+  form: 'logInForm', // a unique identifier for this form
+})(LogInForm);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(form)

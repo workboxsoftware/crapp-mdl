@@ -1,7 +1,5 @@
 import * as t from './actionTypes';
-import {signOut} from './services';
 import {browserHistory} from 'react-router';
-import firebase from 'firebase';
 import * as authServices  from './services';
 
 export function setConnectedStatus(status) {
@@ -20,13 +18,13 @@ export function authClearError() {
 };
 
 
-export function signInUser(credentials) {
+export function logInUser(credentials) {
   return function (dispatch) {
     const password = credentials.password;
     const usernameEmail = credentials.usernameEmail;
 
     /*
-    Sign-in process
+    Log-in process
       1.  See if username found in fb profile
       2.  If yes, try logging in with the email found in profile
       3.  If loogged, we're done.
@@ -40,15 +38,15 @@ export function signInUser(credentials) {
     const promise = authServices.getProfileForUsername(usernameEmail);
     promise
       .then(
-        profile => {return authServices.signInUserWithEmailAndPassword(profile.email, password)},
-        error => {throw "no username - try email"})
+        profile => {return authServices.logInUserWithEmailAndPassword(profile.email, password)},
+        error => { throw new Error('progress": "no username - try email')} )
       .then(
          response => { return "all ok" },
          err => {
           if (usernameEmail.indexOf("@") > -1) {
-            return authServices.signInUserWithEmailAndPassword(usernameEmail, password)
+            return authServices.logInUserWithEmailAndPassword(usernameEmail, password)
           } else {
-            throw "Invalid Username or Password"
+            throw new Error('Invalid Username or Password')
           }
         })
       .then(
@@ -58,26 +56,21 @@ export function signInUser(credentials) {
       .catch(
         message => {console.log("Caught unexpected login mssage", message)}
       )
-
     }
-
   }
-
-
-
-
 
   export function signUpUser(credentials) {
     return function (dispatch) {
       const promise = authServices.createUserWithEmailAndPassword(credentials);
       promise
         .then(
-            response => {return authServices.createUserProfile(credentials.username, credentials.email)},
-            error => { dispatch(authError(error.message));
-                      throw({error: "create user failed"})})
-        .then
-            (response => {console.log("created user profile ok (even if offline it's ok")})
-        .catch(response => {console.log("caught err SIU", response)})
+          response => {return authServices.createUserProfile(credentials.username, credentials.email)},
+          error => { dispatch(authError(error.message));
+                      throw new Error('create user failed')})
+        .then(
+          response => {console.log("created user profile ok (even if offline it's ok")})
+        .catch(
+          response => {console.log("caught err SIU", response)})
     }
   }
 

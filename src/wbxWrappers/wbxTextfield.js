@@ -48,7 +48,7 @@ class WbxTextfield extends Component {
   render() {
     const { input, label, type, rows } = this.props;
     const {formatMessage} = this.props.intl;
-    const { error, submitting } = this.props.meta;
+    const { error } = this.props.meta;
     const tr = new translateText(formatMessage);
     const name = this.props.input.name;
 
@@ -79,6 +79,11 @@ class WbxTextfield extends Component {
       // on server - the input was showing an error
       // right away.  This is the best regex that I
       // could find: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (type === "password") {
+      // debugger;
+      console.log(error);
+    }
 
     let pattern = '';
     let myType = type;

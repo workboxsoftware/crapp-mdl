@@ -5,8 +5,8 @@ import App from '../components/App/App';
 import Home from '../components/Home/Home';
 import Refi18n from '../refi18n/refi18nContainer';  
 import RefDataEntry from '../refDataEntry/refDataEntryContainer';
-import RefSignup from '../refAuth/signUpContainer';
-import RefSignIn from '../refAuth/refSignInContainer';
+import SignUp from '../auth/signUpContainer';
+import LogIn from '../auth/logInContainer';
 import RefDialog from '../refDialog/refDialogForm';
 
 
@@ -18,8 +18,8 @@ const routes = (props) => {
         <Route path="about" component={About} />
         <Route path="refi18n" component={Refi18n} />
         <Route path="refdataentry" component={RefDataEntry} />
-        <Route path="refsignup" component={RefSignup} />
-        <Route path="refsignIn" component={RefSignIn} />
+        <Route path="SignUp" component={SignUp} />
+        <Route path="LogIn" component={LogIn} />
         <Route path="refdialog" component={RefDialog} />
       </Route>
     </Router>

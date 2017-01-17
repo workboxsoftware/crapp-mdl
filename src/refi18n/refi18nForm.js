@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { switchLocale } from '../application/applicationActions'
+import { switchLocale } from '../application/actions'
 import { connect } from 'react-redux';
 import FmtDate from '../widgets/fmtDate';
 import FmtNumber from '../widgets/fmtNumber';

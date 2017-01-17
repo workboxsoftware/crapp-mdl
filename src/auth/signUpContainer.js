@@ -54,7 +54,7 @@ const validateAndUpdateSignup = (values, dispatch) => {
 
   let errors = [];
 
-  if (!values.username || values.username.trim() === '') {
+  if (!values.username || values.username.trim().length == 0) {
     errors.push({username: "no-username: Username required"});
   }
 
@@ -78,22 +78,12 @@ const validateAndUpdateSignup = (values, dispatch) => {
   }
 
   if (errors.length > 0) {
-    throw new SubmissionError(errors);
+    return new Promise(function (resolve, reject) {
+      throw new SubmissionError(errors[0]);
+    });
   }
 
   authActions.signUpUser(values)(dispatch);
-
-  // authServices.createUserWithEmailAndPassword(values.username)
-  //   .then(function (value) {
-  //     authServices.createUserProfile(values.email, values.username);
-  //   }, function (err) {
-  //     throw new SubmissionError(err);
-  //   }
-  //   ).catch(function (err) {
-  //     throw new SubmissionError(err);
-  //   }
-  // )
-
 }
 
 // updates some additional optional info

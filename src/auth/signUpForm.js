@@ -10,6 +10,8 @@ import clouds from '../images/clouds1.png';
 import Alert from '../uikit/alert';
 import {ModalManager} from '../uikit/index';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
+import {browserHistory} from 'react-router';
+import RocketArea from './rocketArea';
 
 const isLowerCase = char => char.toLowerCase() && char !== char.toUpperCase();
 const isUpperCase = char => char.toUpperCase() && char !== char.toLowerCase();
@@ -120,11 +122,11 @@ class SignUpForm extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.auth.authenticated) {
-      browserHistory.push('about');
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps && nextProps.auth.authenticated) {
+  //     browserHistory.push('about');
+  //   }
+  // }
 
   showSignupScreen() {
     const {handleSubmit, submitting} = this.props;
@@ -133,7 +135,7 @@ class SignUpForm extends Component {
       <div className="Signup">
         <form onSubmit={handleSubmit(this.props.validateAndUpdateSignup.bind(this))}>
           <h3>
-            <FmtMsg className="mdl-color-text--primary">signup:Sign up</FmtMsg>
+            <FmtMsg className="mdl-color-text--primary">signup:Sign Up</FmtMsg>
           </h3>
           <div className="Sign-up-input-area">
             <Field component={WbxTextfield} elRef={this.elRef} type="email" label="Your email address"
@@ -203,16 +205,7 @@ class SignUpForm extends Component {
           <div className="Sign-up-loading">
             {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
           </div>
-          <section className="Sign-up-left-side">
-            <div className="Sign-up-cloud-parent">
-              <img src={clouds} className="Sign-up-clouds" alt="logo"/>
-              <img src={clouds} className="Sign-up-clouds Sign-up-clouds-2 {
-" alt="logo"/>
-            </div>
-            <div className="Sign-up-rocket-parent">
-              <img src={rocket} alt="Welcome to Workbox" className={rocketClass}/>
-            </div>
-          </section>
+          <RocketArea props={this.props}/>
           <section className="Sign-up-right-side mdl-color-text--primary">
             {(!auth.authenticated) ? this.showSignupScreen() : this.showInfoScreen()}
           </section>

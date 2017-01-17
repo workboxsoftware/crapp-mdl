@@ -1,4 +1,4 @@
-import { SWITCH_LOCALE } from './applicationActionTypes'
+import { SWITCH_LOCALE } from './actionTypes'
 import * as i18n from '../i18n'
 
 export function switchLocale(locale) {

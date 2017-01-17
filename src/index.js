@@ -4,12 +4,14 @@ import Routes from './config/routes';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import reduxThunk from 'redux-thunk';
-
+import {config as fbDevConfig} from './config/firebase-dev.js';
+import './styles/index.css';
+import './styles/material.css';
 
 import {addLocaleData} from 'react-intl';
 // import {IntlProvider} from 'react-intl';
 
-import applicationReducer from './application/applicationReducer';
+import applicationReducer from './application/reducer';
 import {combineReducers} from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form'
 import authReducer from './authAPI/reducer';
@@ -20,12 +22,12 @@ const  { authServices, authActions }  = authAPI;
 import en from 'react-intl/lib/locale-data/en'
 import fr from 'react-intl/lib/locale-data/fr'
 import de from 'react-intl/lib/locale-data/de'
-// import es from 'react-intl/lib/locale-data/es'
 import ConnectedIntlProvider from './utils/connectedIntlProvider';
 import * as i18n from './i18n'
 addLocaleData(en);
 addLocaleData(fr);
 addLocaleData(de);
+// import es from 'react-intl/lib/locale-data/es'
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
@@ -71,11 +73,11 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 export const store = createStoreWithMiddleware(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 const dispatch=store.dispatch;
 
+// TODO: figure out how to distinguish between dev and live environemnts
+const config = fbDevConfig;
+
 // establish connection to firebase
-authServices.initializeAuth();
-
-
-console.log("is auth'd", authServices.isAuthenticated());
+authServices.initializeAuth(config);
 
 // notify redux on login authorization and signout
 authServices.handleAuthStatusChanged(authActions.authUser, authActions.unAuthUser)(dispatch);
@@ -93,9 +95,6 @@ authServices.handleConnectionStatusChanged(authActions.setConnectedStatus)(dispa
 //   store.dispatch({type: UNAUTH_USER});
 // }
 
-// Styles
-import './styles/index.css';
-import './styles/material.css';
 
 ReactDOM.render(
   <Provider store={store}>

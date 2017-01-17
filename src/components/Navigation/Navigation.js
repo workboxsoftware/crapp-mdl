@@ -1,16 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
-import { bindActionCreators } from 'redux';
 import './style.css';
 import authAPI from '../../authAPI';
 const { authServices }  = authAPI;
-const { authActions } = authAPI;
 
 class Navigation extends React.Component {
 
   handleSignout() {
-    // this.props.services.signOut();
     authServices.signOut();
   }
 
@@ -22,8 +19,8 @@ class Navigation extends React.Component {
       )
     } else {
       return [
-        <Link key="1" className="mdl-navigation__link" to="/refSignIn">Log In</Link>,
-        <Link key="2" className="mdl-navigation__link" to="/refSignup">Sign Up</Link>
+        <Link key="1" className="mdl-navigation__link" to="/LogIn">Log In</Link>,
+        <Link key="2" className="mdl-navigation__link" to="/SignUp">Sign Up</Link>
       ]
     }
   }
@@ -64,12 +61,7 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return({
-     services: bindActionCreators(authServices, dispatch)
-  })
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps)(Navigation);
 

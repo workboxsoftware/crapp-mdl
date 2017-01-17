@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import {Field, Fields} from 'redux-form';
+import { browserHistory } from 'react-router';
+import { injectIntl } from 'react-intl';
+import { ModalManager } from '../uikit';
+import { Field, Fields } from 'redux-form';
 import WbxButton from '../wbxWrappers/wbxButton';
 import WbxTextfield from '../wbxWrappers/wbxTextfield';
-import {injectIntl} from 'react-intl';
 import FmtMsg from '../widgets/fmtMsg';
 import Alert from '../uikit/alert';
-import {ModalManager} from '../uikit';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import {browserHistory} from 'react-router';
+import RocketArea from './rocketArea';
 import './style.css'
 
 const showSubmit = (fields) => {
@@ -20,17 +21,17 @@ const showSubmit = (fields) => {
   if (fields.password.input.value && fields.password.input.value.trim().length > 0) {
     isPasswordEntered = true;
   }
-  let isDisabled = !fields.connected || submitting || !isUsernameEmailEntered || !isPasswordEntered;
+  const auth   = fields.auth;
+  let isDisabled = auth.authenticated || !auth.connected || submitting || !isUsernameEmailEntered || !isPasswordEntered;
 
   return (
-    <div className="SignIn-align-right">
+    <div className="Log-in-align-right">
       <WbxButton disabled={isDisabled} type="submit">Submit</WbxButton>
     </div>
-
   );
 }
 
-class RefSignInForm extends Component {
+class LogInForm extends Component {
 
   constructor(props) {
     super(props);
@@ -44,7 +45,9 @@ class RefSignInForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.auth.authenticated) {
-      browserHistory.push('about');
+      setTimeout(function (){
+        browserHistory.push('about');
+      }, 1000);
     }
   }
 
@@ -73,36 +76,34 @@ class RefSignInForm extends Component {
     const {handleSubmit, submitting} = this.props;
     return (
       <div>
-        <div className="SignIn-container">
-          <div className="SignIn-body">
-            <div className="SignIn-loading">
+        <div className="Auth-container">
+            <div className="Auth-loading">
               {submitting && <div className="mdl-spinner mdl-js-spinner is-active"/>}
             </div>
-            <section className="SignIn-right-side mdl-color-text--primary">
-              <form onSubmit={handleSubmit(this.props.validateAndUpdateSignIn.bind(this))}>
+            <RocketArea props={this.props}/>
+            <section className="Auth-right-side mdl-color-text--primary">
+              <form onSubmit={handleSubmit(this.props.validateAndUpdateLogIn.bind(this))}>
                 <h3>
-                  <FmtMsg className="mdl-color-text--primary">signin:Log In</FmtMsg>
+                  <FmtMsg className="mdl-color-text--primary">login:Log In</FmtMsg>
                 </h3>
-                <div className="SignIn-input-area">
+                <div className="Auth-input-area">
                   <Field component={WbxTextfield} elRef={this.elRef} type="email" label="Username or Email"
                          name="usernameEmail"/>
                   <Field component={WbxTextfield} elRef={this.elRef} type="password" lablel="Choose a password"
                          name="password"/>
                 </div>
-                <div className="SignIn-no-network">
-                  {!this.props.auth.connected && "Sorry - there's no network connection.  Sign up cannot proceed at this time."}
+                <div className="Auth-no-network">
+                  {!this.props.auth.connected && "Sorry - there's no network connection.  Log In cannot proceed at this time."}
                 </div>
-                <Fields props={{connected: this.props.auth.connected}}
+                <Fields props={{auth: this.props.auth}}
                         names={['password', 'usernameEmail']}
                         submitting={submitting} component={showSubmit}/>
 
               </form>
             </section>
           </div>
-        </div>
       </div >
     )
   }
 }
-
-export default injectIntl(RefSignInForm);
+export default injectIntl(LogInForm);

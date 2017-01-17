@@ -4,7 +4,7 @@ import {Field} from 'redux-form';
 import WbxButton from '../wbxWrappers/wbxButton';
 import WbxTextfield from '../wbxWrappers/wbxTextfield';
 import {injectIntl} from 'react-intl';
-import {switchLocale} from '../application/applicationActions';
+import {switchLocale} from '../application/actions';
 import './refDataEntry.css';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
@@ -42,7 +42,6 @@ class RefDataEntryForm extends Component {
 
 
   render() {
-    const locale = this.props.application.locale;
     const {handleSubmit, submitting} = this.props;
 
     return (
